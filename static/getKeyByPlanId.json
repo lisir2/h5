@@ -1,0 +1,119 @@
+[
+    {
+        "attrName": "测试",
+        "createTime": "",
+        "id": 30,
+        "isOperation": 1,
+        "modifiedTime": "",
+        "planAttrListStr": "",
+        "planAttrValList": [
+            {
+                "attrKeyId": 30,
+                "attrValue": "测试1",
+                "id": 48,
+                "isEnable": 0,
+                "planId": 34,
+                "sort": 1,
+                "symbol": ""
+            },
+            {
+                "attrKeyId": 30,
+                "attrValue": "测试2",
+                "id": 49,
+                "isEnable": 0,
+                "planId": 34,
+                "sort": 2,
+                "symbol": ""
+            },
+            {
+                "attrKeyId": 30,
+                "attrValue": "测试3",
+                "id": 50,
+                "isEnable": 0,
+                "planId": 34,
+                "sort": 3,
+                "symbol": ""
+            },
+            {
+                "attrKeyId": 30,
+                "attrValue": "测试4",
+                "id": 51,
+                "isEnable": 0,
+                "planId": 34,
+                "sort": 4,
+                "symbol": ""
+            },
+            {
+                "attrKeyId": 30,
+                "attrValue": "测试5",
+                "id": 52,
+                "isEnable": 0,
+                "planId": 34,
+                "sort": 5,
+                "symbol": ""
+            }
+        ],
+        "planId": 34,
+        "sort": 3
+    },
+    {
+        "attrName": "保障期限",
+        "createTime": "",
+        "id": 27,
+        "isOperation": 1,
+        "modifiedTime": "",
+        "planAttrListStr": "",
+        "planAttrValList": [
+            {
+                "attrKeyId": 27,
+                "attrValue": "1年",
+                "id": 42,
+                "isEnable": 0,
+                "planId": 34,
+                "sort": 1,
+                "symbol": ""
+            },
+            {
+                "attrKeyId": 27,
+                "attrValue": "2年",
+                "id": 43,
+                "isEnable": 0,
+                "planId": 34,
+                "sort": 2,
+                "symbol": ""
+            }
+        ],
+        "planId": 34,
+        "sort": 1
+    },
+    {
+        "attrName": "性别",
+        "createTime": "",
+        "id": 28,
+        "isOperation": 1,
+        "modifiedTime": "",
+        "planAttrListStr": "",
+        "planAttrValList": [
+            {
+                "attrKeyId": 28,
+                "attrValue": "男",
+                "id": 44,
+                "isEnable": 0,
+                "planId": 34,
+                "sort": 1,
+                "symbol": ""
+            },
+            {
+                "attrKeyId": 28,
+                "attrValue": "女",
+                "id": 45,
+                "isEnable": 0,
+                "planId": 34,
+                "sort": 2,
+                "symbol": ""
+            }
+        ],
+        "planId": 34,
+        "sort": 1
+    }
+]

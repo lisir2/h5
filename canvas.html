@@ -1,0 +1,242 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="viewport"
+        content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <!-- <link href="css/mui.min.css" rel="stylesheet" /> -->
+    <link rel="stylesheet" href="js/layui/css/layui.css">
+    <script type="text/javascript" src="js/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="js/layui/layui.all.js"></script>
+    <script src="js/common_xj_20171206.js"></script>
+    <title>签名</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        html,
+        body {
+            width: 100%;
+        }
+
+        body {
+            display: -webkit-box;
+            display: -moz-box;
+            display: -ms-flexbox;
+            display: -webkit-flex;
+            display: flex;
+            flex-direction: column;
+            -webkit-flex-direction: column;
+        }
+
+        header {
+            width: 100%;
+            height: 0.88rem;
+            line-height: 0.88rem;
+            padding: 0 .24rem;
+            box-sizing: border-box;
+            text-align: center;
+            font-size: 0.34rem;
+            background: #fff;
+        }
+
+        .content{
+            display: none;
+        }
+
+        #footers {
+            width: 100%;
+            height: 1rem;
+            background: #fff;
+            text-align: center;
+            display: -webkit-box;
+            display: -moz-box;
+            display: -ms-flexbox;
+            display: -webkit-flex;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+        }
+
+        button {
+            width: 60px;
+            height: 30px;
+            border-radius: 0.34rem;
+            font-size: 0.28rem;
+            color: #fff;
+            outline: none;
+            border: 0;
+        }
+
+        .but1 {
+            background: #999999;
+        }
+
+        .but2 {
+            background: #ff3737;
+        }
+
+        #container {
+            flex: 1;
+            background: #f5f5f5;
+            padding: 0.1rem;
+            font-size: 0;
+        }
+
+        canvas {
+            box-sizing: border-box;
+            background: white;
+            margin: auto;
+            display: block;
+        }
+
+        .activityBtn{
+            background: #ff3737;
+            opacity: 0.6;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<!-- 自适应js -->
+<script type="text/javascript" charset="utf-8">
+    "use strict";
+    (function (doc, win) {
+        var docEl = doc.documentElement,
+            resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+            recalc = function () {
+                var clientWidth = docEl.clientWidth;
+                if (!clientWidth) return;
+                docEl.style.fontSize = (clientWidth / 7.5) + 'px';
+            };
+        if (!doc.addEventListener) return;
+        win.addEventListener(resizeEvt, recalc, false);
+        doc.addEventListener('DOMContentLoaded', recalc, false);
+    })(document, window);
+</script>
+
+<body>
+    <div class="content">
+        <div id="container">
+            <canvas id="canvas"></canvas>
+        </div>
+        <div id="footers">
+            <button class="but1">重置</button>
+            <button class="but2" onclick="submit()">确定</button>
+        </div>
+    </div>
+</body>
+<script type="text/javascript">
+        $('.content').fadeIn();
+        var canvas = document.getElementById("canvas");
+        //设置确定按钮不可用
+        $('.but2').attr('disabled', true);
+        var winWidth = document.documentElement.clientWidth;
+        var winHight = document.documentElement.clientHeight;
+        var headH = $("header").innerHeight();
+        var footH = $("#footers").innerHeight();
+
+        //按比例计算内边距的值,当前UI设计图宽为750,可根据项目设置
+        var paddingW = (winWidth * 100 / 750) * 0.24 * 2;
+        if (winWidth > winHight) {//横屏 比例用body的高来计算
+            paddingW = (winHight * 100 / 750) * 0.24 * 2;
+        }
+        
+        canvas.width = winWidth - paddingW;
+        canvas.height = 300;
+
+        var content = canvas.getContext("2d");
+        //设置画笔的样式
+        content.strokeStyle = "#000";
+        content.lineWidth = 1;
+        content.lineCap = 'round';
+        content.lineJoin = 'round';
+        content.shadowBlur = 1;
+        content.shadowColor = '#000';
+
+        content.beginPath();
+        canvas.addEventListener("touchstart", function (e) {
+            content.beginPath();
+            var touch = e.targetTouches[0];
+            var x = touch.pageX - canvas.offsetLeft;
+            var y = touch.pageY - canvas.offsetTop;
+            content.moveTo(x, y);
+        });
+        canvas.addEventListener("touchmove", function (event) {
+            event.preventDefault();
+            var touch = event.targetTouches[0];
+            var x = touch.pageX - canvas.offsetLeft;
+            var y = touch.pageY - canvas.offsetTop;
+            content.lineTo(x, y);
+            content.stroke();
+        });
+        canvas.addEventListener("touchend", function (event) {
+            content.closePath();
+            //当画布有内容时,确定按钮才可用
+            $('.but2').attr('disabled', false);
+        });
+        document.querySelector(".but1").onclick = function () {
+            content.clearRect(0, 0, canvas.offsetWidth, canvas.offsetHeight);
+            $('.but2').attr('disabled', true);
+        }
+
+
+
+        // 确定提交签名照片
+        function submit() {
+            var imgBase64 = canvas.toDataURL();
+            var imgPng = canvas.toDataURL('image/png');
+            var image = dataURLtoBlob(imgBase64);
+            var formData = new FormData();
+            formData.append("file", image, Date.now() + '.jpg');
+
+            parent.$('#submitBtn').attr('disabled',true); // 提交信息认证按钮失效
+
+            $.ajax({
+                url: '/openapi/common/upload',
+                type: 'POST',
+                data: formData, // 上传formdata封装的数据包
+                dataType: 'JSON',
+                cache: false, // 不缓存
+                processData: false, // jQuery不要去处理发送的数据
+                contentType: false, // jQuery不要去设置Content-Type请求头
+                success: function (res) { // 成功回调
+
+                    parent.$('#submitBtn').attr('disabled',false); // 恢复提交信息认证按钮功能
+
+                    window.parent.layer.closeAll();
+                    if (res.code == 20000) {
+                        var protocol = window.location.protocol;
+                        var host = window.location.host;
+                        $(".signatureContent", window.parent.document).html('<img src='+ protocol + '//' +  host + res.data.filePath +'>');
+                        // 获取签名之后的pdf
+                        window.parent.signPdf();
+                    } else {
+                        layer.msg(res.mssage);
+                    }
+                },
+                error: function () {
+                    window.parent.layer.closeAll();
+                    layer.msg(res.mssage);
+                }
+            });
+        }
+
+        // base64转blob
+        function dataURLtoBlob(dataurl) { /*将base64转换成可用formdata提交的文件*/
+            var arr = dataurl.split(','),
+                mime = arr[0].match(/:(.*?);/)[1],
+                bstr = atob(arr[1]),
+                n = bstr.length,
+                u8arr = new Uint8Array(n);
+            while (n--) {
+                u8arr[n] = bstr.charCodeAt(n);
+            }
+            return new Blob([u8arr], { type: mime });
+        }
+</script>
+
+</html>
