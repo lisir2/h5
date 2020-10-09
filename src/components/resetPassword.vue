@@ -115,9 +115,12 @@ body {
     border-radius: 44px;
     margin: 20px 66px;
   }
-  .van-icon__image {
-    width: inherit;
-    height: inherit;
+  // .van-icon__image {
+  //   width: inherit;
+  //   height: inherit;
+  // }
+  .van-icon {
+    line-height: initial!important;
   }
   .van-image__img {
     width: 36px;

@@ -89,6 +89,8 @@ export default {
                             this.loginAndregist="已完善资料";
                         }
                     }
+                }else{
+                    this.Toast(res.message);
                 }
             })
         },

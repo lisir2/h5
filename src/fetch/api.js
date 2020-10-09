@@ -109,7 +109,7 @@ export default {
     return post('/openapi/h5/user/register',params);
   },
   quickLogin(params){
-    return post('/openapi/h5/user/quicklogin',params);
+    return post('/openapi/h5/user/h5QuickLogin',params);
   },
   getAdvcode(params){
     return post('/openapi/h5/index/getAdvByCode',params);

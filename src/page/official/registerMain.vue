@@ -167,7 +167,7 @@ export default {
                 ) : ''
               });
             } else {
-              this.$router.push({ path: "/home" });
+              this.$router.push({ path: "/" });
             }
           } else {
             Toast.fail(res.message);
@@ -233,6 +233,10 @@ export default {
     margin-bottom: 20px;
     background: rgba(255, 255, 255, 1);
   }
+  .van-icon {
+    font-size: 30px;
+    line-height: initial!important;
+  }
   .nextstep {
     text-align: center;
     margin-top: 140px;
@@ -243,9 +247,6 @@ export default {
       margin: 30px 0;
       background: rgba(249, 154, 49, 1);
       border: 0;
-    }
-    .van-icon {
-      font-size: 30px;
     }
     .van-checkbox {
       display: inline-block;

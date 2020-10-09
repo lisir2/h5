@@ -1,9 +1,9 @@
 <!-- 组件说明 -->
 <template>
-  <div class="mainGoods" style="position: relative;">
+  <div class="productdetail" style="position: relative;">
     <van-nav-bar title="产品详情" left-arrow @click-left="onClickLeft" @click-right="onClickRight">
       <template #right>
-        <van-icon :name="shareIcon" size="18" />
+        <van-icon :name="shareIcon" size="14" />
       </template>
     </van-nav-bar>
     <div v-if="skeleton" style="margin-top: 1rem;'">
@@ -25,7 +25,7 @@
             icon="orders-o"
             :to="{name:'productTerms',query:{productName:this.productName,planId:this.planId}}"
           />
-          <van-grid-item text="客户告知书" icon="notes-o" @click="showFile('khgzs.pdf')" />
+          <van-grid-item text="客户告知书" icon="notes-o" @click="ProviewImg(CustomerNotification)" />
           <van-grid-item text="保单样本" icon="newspaper-o" class="policySamples" />
           <van-grid-item
             text="常见问题"
@@ -105,14 +105,56 @@
         <iframe v-if="ClauseShow" id="pdf" :src='"./static/pdf/web/viewer.html?file=" + pdfFilePath' style='width:100%;height:93%'></iframe>
       </van-popup>
       <!-- 投保流程告知 -->
-      <van-dialog v-model="InsuredInformShow" class="InsuredInform" title="即将进入投保流程" confirm-button-color="#F99A31" confirm-button-text="知道了">
+      <van-dialog v-model="InsuredInformShow" class="InsuredInform" title="即将进入投保流程" confirm-button-color="#F99A31" confirm-button-text="知道了" @confirm="informConfirm">
         <img src="@/assets/images/productDetails/InsuredInform.png" alt />
-        <p class="InsuredInform_content">请仔细阅读保险条款 <br>投保人在销售页面的操作将被记录</p>
+        <p class="InsuredInform_content">请仔细阅读保险条款及客户告知书 <br>投保人在销售页面的操作将被记录</p>
         <div class="InsuredInform_underwrite">
-          <p>本产品由浙江环晟保险经纪有限公司提供销售服务</p>
+          <p>本产品由浙江环晟保险经纪有限公司提供经纪服务</p>
           <p>由{{this.$store.state.productDetail.data.prodGoods.insuranceCompanyName}}承保</p>
         </div>
       </van-dialog>
+      <!-- 告知书弹出框 -->
+      <van-action-sheet v-model="notificationShow" title="重要提示" :style="{height:'85%',paddingBottom:'70px'}">
+        <div class="notificationContent">
+          <h1 class="notificationTitle">浙江环晟保险经纪有限公司【保险经纪网】</h1>
+          <h1 class="notificationTitle">客户告知书</h1>
+          <p>尊敬的客户：</p>
+          <p style="text-indent:2em;">感谢您委托我司（【保险经纪网】平台）代为办理保险业务，本公司是基于投保人的利益，为投保人与保险人订立保险合同提供中介服务的保险专业中介机构。为了保护您的合法权益，根据《中华人民共和国保险法》、《保险经纪人监管规定》及《互联网保险业务监管暂行办法》的要求，现将有关事项告知如下：</p>
+          <p>一、公司基本情况</p>
+          <p>（一）机构名称：浙江环晟保险经纪有限公司</p>
+          <p>（二）机构住所：浙江省杭州市拱墅区密渡桥路1号浙商时代大厦B座6F</p>
+          <p>（三）许可证名称：经营保险经纪业务许可证</p>
+          <p>（四）许可证编号：260939000000800</p>
+          <p>（五）许可证有限期至：2023年02月19日</p>
+          <p>（六）业务范围：</p>
+          <p>1、经营区域：全国区域内（港、澳、台除外）；</p>
+          <p>2、为投保人拟订投保方案，选择保险人，办理投保手续；</p>
+          <p>3、协助被保险人或受益人进行索赔；</p>
+          <p>4、再保险经纪业务；</p>
+          <p>5、为委托人提供防灾、防损或风险评估、风险管理咨询服务；</p>
+          <p>6、第二类增值电信业务中的信息服务业务（仅限互联网信息服务）（增值电信业务经营许可证编号：浙B2-20160256）。</p>
+          <p>（七）机构关系：浙江环晟保险经纪有限公司是一家经中国银行保险监督管理委员会或原中国保险监督管理委员会批准设立的全国性保险经纪公司，与任何保险公司或保险中介公司无关联关系。</p>
+          <p>（八）法律责任：根据《中华人民共和国保险法》相关规定，保险经纪人在办理保险业务中因过错给被保险人造成损失，依法承担赔偿责任。</p>
+          <p>（九）联系电话：400-693-8080</p>
+          <p>二、请您仔细阅读保险条款，重点关注保险责任、责任免除、被保险人权利义务、免赔额或免赔率的计算、健康保险产品等待期等内容，并可要求本公司客服人员对上述内容进行详细讲解。</p>
+          <p>三、请向本公司客服人员了解《中华人民共和国保险法》等法律法规对于索赔时效、保险人理赔时限、合同中止与失效、未成年人投保限额等的相关规定，以及不履行如实告知义务、故意制造保险事故或夸大事故损失、申报年龄或职业不真实等情形导致的法律后果。</p>
+          <p>四、本公司承诺将通过有效的技术手段和管理措施对投保人/被保险人/受益人的个人信息、投保交易信息等非公开信息进行保密，严格限制保密信息的接触人，妥善保管保密信息；并在与保险人的数据交换过程中采用了加密与验证保证交易安全。</p>
+          <p>五、本公司已按《保险经纪人监管规定》缴存保证金/投保职业责任保险。</p>
+          <p>六、如果您发现本公司客服人员存在误导行为及其他损害您合法权益的行为，请注意保留书面证据或其他证据，可向本公司投诉，投诉电话：0571-88290972</p>
+          <p>我声明：浙江环晟保险经纪有限公司的客服人员已经对我投保相关的事项讲解清楚，我也对上述内容明确理解。</p>
+        </div>
+        <van-button type="primary" round  color="linear-gradient(to right, #F7CD45, #ED7932)" block @click="notificationShow = false" :style="{position:'fixed',bottom:'10px',width: '90%',left: 0,right: 0, margin:'auto'}">我已确认并了解以上内容</van-button>
+      </van-action-sheet>
+      <!-- 图片条款弹出框 -->
+      <van-popup v-model="clauseShow" :style="{ width:'100%',height: '100%'}"  closeable close-icon="close">
+        <div :style="{ width:'100%',height: '100%',overflow:'scroll'}">
+          <van-image :src="clausePath" :style="{ width:'100%'}">
+            <template v-slot:loading>
+                <van-loading type="spinner" size="20" />
+            </template>
+          </van-image>
+        </div>
+      </van-popup>
     </div>
   </div>
 </template>
@@ -156,6 +198,7 @@ export default {
       listContentImages2: require("@/assets/images/detail/客户告知书.png"),
       listContentImages3: require("@/assets/images/detail/样本保单.png"),
       listContentImages4: require("@/assets/images/detail/常见问题.png"),
+      CustomerNotification: require('@/assets/images/productDetails/CustomerNotification.png'),
       shareIcon: require("@/assets/images/detail/shareIcon.png"),
       detailShow: false,
       skeleton: true,
@@ -164,10 +207,21 @@ export default {
       ShareLink: "", // 分享链接
       ClauseShow: false, // 条款展示
       pdfFilePath:'', // pdf地址
-      InsuredInformShow: true, // 投保流程告知
+      InsuredInformShow: false, // 投保流程告知
+      clauseShow: false, // 条款
+      clausePath: '', //条款地址
+      notificationShow:false, //告知书弹框
     };
   },
   created() {
+    
+  },
+  watch: {
+    $route(to, form) {
+      console.log(to.name, form.name);
+    }
+  },
+  mounted() {
     let that = this;
     this.productId = this.getQueryString("productId");
     var args = this.sign({
@@ -204,7 +258,7 @@ export default {
         // 分享title
         var title = res.data.prodGoods.goodName;
         // 调用分享
-        this.$getSign(title, descript, ShareImage, that.ShareLink);
+        this.$WXShare(title, descript, ShareImage, that.ShareLink);
       }
 
       that.detailShow = true;
@@ -213,33 +267,38 @@ export default {
       this.$nextTick(function() {
         $(".policySamples").click(function() {
           that.pdfFilePath = window.location.origin + res.data.prodGoods.goodPolicySample;
-          that.ClauseShow = true;
+          // that.ClauseShow = true;
+          that.ProviewImg(that.pdfFilePath);
         });
       });
 
-      // 调用可回溯初始化方法【中科软】 v4.5
-      var infor = {};
-      infor.productVersion = "testversion"; //销售产品版本
-      infor.orderSysSource = "hstest"; //来源
-      infor.productCode = res.data.prodGoods.goodCode;//产品编码，必填
-      infor.appId="";//登录名
-      infor.openId="";//openid
-      infor.nodeName="";//节点
-      infor.start=0; //必传
-      initEasyReplay(infor);
-      // 调用可回溯初始化方法【中科软】 v4.5
+      // 没有from路由
+      if(!this.$store.state.fromRouter || this.$store.state.fromRouter == 'classlist' || this.$store.state.fromRouter == 'home' || this.$store.state.fromRouter == 'home' || this.$store.state.fromRouter == 'StudyArticle' || this.$store.state.fromRouter == 'personalPolicy' || this.$store.state.fromRouter == 'industryPolicy' || this.$store.state.fromRouter == 'vehiclePolicy'){
+        this.InsuredInformShow = true; // 投保流程告知
+        console.log('刷新了页面，或者从产品列表进入，调用录制初始方法');
+        // 调用可回溯初始化方法【中科软】 v4.5
+        var infor = {};
+        infor.productVersion = res.data.prodGoods.goodVersion; //销售产品版本
+        infor.orderSysSource = this.$store.state.orderSysSource; //来源
+        infor.productCode = res.data.prodGoods.goodCode;//产品编码，必填
+        infor.appId="";//登录名
+        infor.openId="";//openid
+        infor.nodeName="";//节点
+        infor.start=0; //必传
+        initEasyReplay(infor);
+        // 调用可回溯初始化方法【中科软】 v4.5
+      }
     });
-  },
-  watch: {
-    $route(to, form) {
-      console.log(to.name, form.name);
-    }
-  },
-  mounted() {
+
+
     // 实例化copy方法
     // this.linkCopy();
   },
   methods: {
+    // 流程告知确认
+    informConfirm(){
+      this.notificationShow = true;
+    },
     // 生成海报
     GeneratePoster() {
       if (!this.posterPic) {
@@ -331,11 +390,6 @@ export default {
     SecurityLines(val) {
       this.planId = val;
     },
-    // 打开条款
-    showFile(url) {
-      this.pdfFilePath = url;
-      this.ClauseShow = true;
-    },
     // 判断图片是否加载完成
     imgLoad(img, callback) {
       var timer = setInterval(function() {
@@ -372,13 +426,18 @@ export default {
     SetWxShareShow() {
       this.$refs.detailsTow.SetWxShareShow();
       this.showShare = false;
-    }
+    },
+    // 预览图片
+    ProviewImg(imgPath) {
+      this.clausePath = imgPath;
+      this.clauseShow = true;
+    },
   }
 };
 </script>
 
 <style lang="scss">
-.mainGoods {
+.productdetail {
   .van-grid-item__content {
     padding: 0px;
   }
@@ -545,6 +604,18 @@ export default {
       width: 20%;
       margin: 62px 0 50px;
     }
+  }
+  .notificationContent{
+    line-height: 45px;
+    margin-top: 20px;
+    padding: 0 40px;
+    color: rgb(102,102,102);
+  }
+  .notificationTitle{
+    color: black;
+    font-weight: 500;
+    text-align: center;
+    font-size: 32px;
   }
 }
 </style>

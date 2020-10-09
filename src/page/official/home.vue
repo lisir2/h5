@@ -81,7 +81,7 @@ export default {
         // 分享链接
         var shareLink = location.href;
         // 调用分享
-        this.$getSign(title, descript, ShareImage, shareLink);
+        this.$WXShare(title, descript, ShareImage, shareLink);
       }
       
   },

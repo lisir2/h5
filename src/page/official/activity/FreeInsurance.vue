@@ -76,7 +76,7 @@
           icon="orders-o"
           :to="{name:'productTerms',query:{productName:this.productName,planId:this.planId}}"
         />
-        <van-grid-item text="客户告知书" icon="notes-o" @click="showFile('khgzs.pdf')" />
+        <van-grid-item text="客户告知书" icon="notes-o" @click="$showFile('khgzs.pdf')" />
         <van-grid-item text="保单样本" icon="newspaper-o" class="policySamples" />
         <van-grid-item
           text="常见问题"
@@ -118,7 +118,7 @@
           <p>
             <span
               style="color: rgb(0, 140, 255);"
-              @click="showFile(link+item.termFilePath)"
+              @click="$showFile(link+item.termFilePath)"
               v-for="(item,index) in TermsList"
               :key="index"
             >《{{item.termName}}》{{index == (TermsList.length-1) ? '' : '、'}}</span>
@@ -214,7 +214,7 @@ export default {
           var title = '百万交通意外险，免费领！';
           // 分享链接
           var shareLink = location.href;
-          this.$getSign(title, descript, ShareImage, shareLink);
+          this.$WXShare(title, descript, ShareImage, shareLink);
         }
 
         that.response = true;
@@ -268,19 +268,6 @@ export default {
   methods: {
     onClickLeft() {
       this.$router.go(-1);
-    },
-    // pdf本地预览
-    showFile(url) {
-      event.stopPropagation();
-      layer.open({
-        type: 1,
-        title: "信息(点击“+”号放大查看条款)",
-        area: ["100%", "100%"], //宽高
-        content:
-          "<iframe src='./static/pdf/web/viewer.html?file=" +
-          url +
-          "' style='width:100%;height:100%'></iframe>"
-      });
     },
     // 免费领取
     FreeReceive() {

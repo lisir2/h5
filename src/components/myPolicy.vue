@@ -5,7 +5,7 @@
         <span class="leftB"></span>
         <p class="titleA">我的保单</p>
       </div>
-      <van-grid :column-num="3" style="border:none">
+      <van-grid :column-num="3" style="border:none" icon-size="32">
         <van-grid-item text="个险保单" :icon="policy1" to="personalPolicy" />
         <van-grid-item text="团险保单" :icon="policy2" to="industryPolicy" />
         <van-grid-item text="车险保单" :icon="policy3" to="vehiclePolicy" />
@@ -14,7 +14,7 @@
 
     <div class="becomeDlr" v-if="userDetails == '' ? true : userDetails.agentInfo.auditStatus != 2">
       <router-link to="/agent">
-        <van-Image width="100%" :src="img" />
+        <van-Image :src="img" :style="{borderTop:'solid 1px #DDDDDD'}"/>
       </router-link>
     </div>
 
@@ -91,7 +91,7 @@ export default {
       userDetails:'', //用户信息
     };
   },
-  props:['userinfo','agentInfo'],
+  props:['userinfo'],
   watch:{
       userinfo(newData,old){
           this.userDetails = newData;
@@ -119,7 +119,7 @@ export default {
   }
   .policyList {
     .van-icon__image {
-      width: inherit;
+      // width: inherit;
       height: inherit;
       .van-image__img {
         width: 55px;
@@ -133,6 +133,9 @@ export default {
       display: block;
       padding: 6px 30px 28px 30px;
     }
+  }
+  .otherList{
+    margin-bottom: 80px;
   }
   .otherList,
   .MyServices {

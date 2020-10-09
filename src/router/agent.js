@@ -60,7 +60,11 @@ let agent = [
     {
         path: '/inviteFriends',
         name: 'inviteFriends',
-        component: resolve => require(['@/components/agent/inviteFriends'], resolve)
+        component: resolve => require(['@/components/agent/inviteFriends'], resolve),
+        meta: {
+            title: '邀请好友',
+            allowShare: true
+        }
     },
     // 我的团队
     {

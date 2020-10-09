@@ -26,6 +26,7 @@
                   <van-image
                     width="2.375rem"
                     height="2.08rem"
+                    lazy-load
                     :src="imgCommonPath +item.goodSmallImg"
                   />
                   <span>{{item.goodInsuranceCompanyAlias}}</span>

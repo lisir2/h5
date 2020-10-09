@@ -172,11 +172,21 @@
             v-for="(item,index) in goodClauseList"
             :key="index+1000"
             href="javascript:void(0)"
-            @click="showFile(item.doc_pdf)"
+            @click="ProviewImg(item.doc_pdf)"
           >《{{item.name}}》</a>
         </div>
       </div>
     </div>
+    <!-- 图片条款弹出框 -->
+    <van-popup v-model="clauseShow" :style="{ width:'100%',height: '100%'}"  closeable close-icon="close">
+        <div :style="{ width:'100%',height: '100%',overflow:'scroll'}">
+        <van-image :src="clausePath" :style="{ width:'100%'}">
+            <template v-slot:loading>
+                <van-loading type="spinner" size="20" />
+            </template>
+        </van-image>
+        </div>
+    </van-popup>
   </div>
 </template>
 
@@ -208,7 +218,6 @@ export default {
       subjectData: {}, //最后要用的标的对象
       productId: "", //产品id
       planId: "", //计划id
-
       baseInfo: {
         oNumber: "",
         startTimeName: "",
@@ -232,7 +241,9 @@ export default {
         accountBankName: "",
         accountNo: ""
       },
-      goodClauseList:[]//产品条款
+      goodClauseList:[],//产品条款
+      clauseShow: false, // 条款
+      clausePath: '', //条款地址
     };
   },
   computed: {},
@@ -317,16 +328,9 @@ export default {
     onClickLeft() {
       this.$router.go(-1);
     },
-    showFile(url) {
-      layer.open({
-        type: 1,
-        title: "信息(点击“+”号放大查看条款)",
-        area: ["100%", "100%"], //宽高
-        content:
-          "<iframe src='./static/pdf/web/viewer.html?file=" +
-          encodeURIComponent(url)  +
-          "' style='width:100%;height:100%'></iframe>"
-      });
+    ProviewImg(url) {
+      this.clauseShow = true; // 条款
+      this.clausePath = url; //条款地址
     },
     // 保单下载
 

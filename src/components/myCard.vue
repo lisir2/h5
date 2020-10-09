@@ -210,13 +210,15 @@ export default {
     color: #302d2d;
     margin-bottom: 40px;
     .descTitle {
-      padding: 40px 0;
+      padding: 40px 0 30px;
       font-size: 28px;
     }
 
     textarea {
       border: none;
       width: 100%;
+      background: #F7F7F7;
+      padding: 20px 25px;
     }
   }
 

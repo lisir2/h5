@@ -21,8 +21,9 @@
         <li>
           <span>开户行</span>
           <span @click="immutable ? '' : bankSelectShow = true">
-            <input type="text" placeholder="请填写开户行" readonly v-model="bankName.name" />
+            <input type="text" placeholder="请选择开户行" readonly v-model="bankName.name" />
           </span>
+          <van-icon name="arrow" v-if="immutable ? false : true"/>
         </li>
         <li>
           <span>银行卡号</span>
@@ -184,7 +185,7 @@ export default {
       li {
         height: 100px;
         line-height: 100px;
-        font-size: 30px;
+        font-size: 28px;
         margin: 0 32px;
         color: #302d2d;
         border-bottom: 1px solid #eee;

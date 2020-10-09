@@ -105,7 +105,7 @@
             <a
               v-for="(item , index) in newClauseList"
               href="javascript:void(0)"
-              @click="showFile(link + item.termFilePath)"
+              @click="ProviewImg(link + item.termFilePath)"
               :key="index"
             >《{{item.termName}}》</a>
           </div>
@@ -153,7 +153,7 @@
     <!-- 投保声明条款 -->
     <van-popup
       v-model="DeclarationClauseShow"
-      :style="{ width: '85%'}"
+      :style="{ width: '85%', boxSizing:'border-box'}"
       closeable
       class="DeclarationClause"
       round
@@ -162,7 +162,7 @@
       <div>
         <a v-for="(item , index) in AllClause"
           href="javascript:void(0)"
-          @click="showFile(link + item.termFilePath)"
+          @click="ProviewImg(link + item.termFilePath)"
           :key="index"
         >《{{item.termName}}》</a>
       </div>
@@ -173,7 +173,7 @@
     <van-popup
       v-model="wxShare_show"
       position="bottom"
-      @click="wxShare_show = false;"
+      @click="OrderCountdownFun()"
       :style="{ width:'100%',height:'100%',background: 'rgba(0,0,0,0)' }"
     >
       <img
@@ -206,8 +206,18 @@
     <!-- 订单倒计时 -->
     <van-dialog v-model="OrderCountdownShow" title="被保险人确认验证" class="OrderCountdown" get-container=".policyPreview" show-cancel-button @confirm="dialogConfirm" confirm-button-text="确定">
       <p style="position: absolute;top: -34px;color: white;text-align: center;width: 100;left: 0;right: 0;">距离订单关闭还剩：{{OrderCountdown}}</p>
-      <p style="padding:20px 30px;">恭喜您，分享成功!务必请被保险人在6小时内完成确认，否则此订单将自动关闭！如果被保险人已完成确认，请点击“确定”按钮，去支付保费。</p>
+      <p style="padding:20px 30px;">务必请被保险人在6小时内完成确认，否则此订单将自动关闭！如果被保险人已完成确认，请点击“确定”按钮，去支付保费。</p>
     </van-dialog>
+    <!-- 图片条款弹出框 -->
+    <van-popup v-model="clauseShow" :style="{ width:'100%',height: '100%'}"  closeable close-icon="close">
+        <div :style="{ width:'100%',height: '100%',overflow:'scroll'}">
+        <van-image :src="clausePath" :style="{ width:'100%'}">
+            <template v-slot:loading>
+                <van-loading type="spinner" size="20" />
+            </template>
+        </van-image>
+        </div>
+    </van-popup>
   </div>
 </template>
 
@@ -276,6 +286,8 @@ export default {
       countdownStarts: false, // 倒计时是否开始（投保人分享之后生成倒计时，如果已经生成再次分享直接展示）
       uuid:'', // 验证码id
       confirmStatus: '', // 被保人是否确认（1是，0否）
+      clauseShow: false, // 条款
+      clausePath: '', //条款地址
     };
   },
   mounted() {
@@ -302,14 +314,6 @@ export default {
       this.confirmStatus = res.confirmStatus;
       this.previewTime = res.previewTime;
 
-      // 可回溯 在生成订单加载的时候 执行
-      var infor = {};
-      infor.productVersion = "testversion"; //销售产品版本
-      infor.orderSysSource = "hstest"; //来源
-      infor.orderCode = res.orderNo; //此处传递对应的订单号
-      _setOrder(infor);
-      console.log("可回溯 在生成订单加载的时候 执行传入订单号" + res.orderNo);
-
       // 投保人预览时调用
       if(!this.IsInsuredConfirmation){
         // 判断该保单是否需要被保人确认
@@ -321,7 +325,33 @@ export default {
           // 判断被保险人类型 调用微信分享（被保险人非本人、子女调用微信分享）
           this.JudgeInsuredIncokeWXShare();
         }
+      } else{
+        // 被保人预览时调用
+        this.$dialog.alert({
+          title: '需要被保险人确认',
+          message: '根据监管要求，以死亡为给付条件、被保险人与投保人不一致的保险产品时，需要被保险人进行确认后，方可投保！请务必在<span style="color:red;">6</span>小时内完成相关条款及其它内容的确认，否则订单将自动关闭，投保失败。',
+          confirmButtonText: '知道了',
+        });
+
+        // 分享出去的被保人确认页面，调用重新录制（后期他们会根据订单号，合并视频）
+        var infor = {};
+        infor.productVersion = res.product.goodVersion; //销售产品版本
+        infor.orderSysSource = this.$store.state.orderSysSource; //来源
+        infor.productCode = res.product.goodCode;//产品编码，必填
+        infor.appId="";//登录名
+        infor.openId="";//openid
+        infor.nodeName="";//节点
+        infor.start=0; //必传
+        initEasyReplay(infor);
       }
+
+      // 可回溯 在生成订单加载的时候 执行
+      var infor = {};
+      infor.productVersion = res.product.goodVersion; //销售产品版本
+      infor.orderSysSource = this.$store.state.orderSysSource; //来源
+      infor.orderCode = res.orderNo; //此处传递对应的订单号
+      _setOrder(infor);
+      // 可回溯 在生成订单加载的时候 执行
 
       //家政特殊处理段落
       if (res.product.goodName == "环晟-平安家政服务综合保险") {
@@ -486,19 +516,9 @@ export default {
           that.newClauseList.push(obj);
         }
       });
+      // 获取所有产品条款 + 投保声明条款
+      this.getAllClause();
     });
-
-    // 获取所有产品条款 + 投保声明条款
-    this.getAllClause();
-    
-    // 被保人预览
-    if(this.IsInsuredConfirmation){
-      this.$dialog.alert({
-        title: '需要被保险人确认',
-        message: '根据监管要求，以死亡为给付条件、被保险人与投保人不一致的保险产品时，需要被保险人进行确认后，方可投保！请务必在<span style="color:red;">6</span>小时内完成相关条款及其它内容的确认，否则订单将自动关闭，投保失败。',
-        confirmButtonText: '知道了',
-      });
-    }
   },
   methods: {
     //根据传入的英文键，返回对应的中文健
@@ -644,18 +664,6 @@ export default {
     changePayShow(isBoole) {
       this.payShow = isBoole;
     },
-    // pdf在线预览
-    showFile(url) {
-      layer.open({
-        type: 1,
-        title: "信息(点击“+”号放大查看条款)",
-        area: ["100%", "100%"], //宽高
-        content:
-          "<iframe src='./static/pdf/web/viewer.html?file=" +
-          url +
-          "' style='width:100%;height:100%'></iframe>"
-      });
-    },
     // 被保人信息+个数(如果只有一个被保人不展示个数)
     InsuredInformation(index, newInserdList) {
       if (newInserdList.length > 1) {
@@ -664,7 +672,7 @@ export default {
         return "被保险人信息";
       }
     },
-    // 条款弹出框，被保人同意协议
+    // 同意条款弹出框，被保人同意协议
     inserdConsent(){
       this.checked = true;
       this.InsuredConfirmation();
@@ -758,9 +766,7 @@ export default {
         let ShareImage = location.protocol + "//" + location.host + '/hsfront' + require('@/assets/images/home/logo.png').substring(1);
         // 分享链接
         let shareLink = location.href + '&insuredPhone=' + this.insuredPhone;
-        this.$getSign("请您尽快确认投保信息！6小时内有效！", "根据监管要求，投保人"+ this.holderList.holderName +"为您投保的产品，需要您确认后，方可投保！", ShareImage, shareLink, ()=>{
-          this.OrderCountdownFun();
-        });
+        this.$WXShare("请您尽快确认投保信息！6小时内有效！", "根据监管要求，投保人"+ this.holderList.holderName +"为您投保的产品，需要您确认后，方可投保！", ShareImage, shareLink);
       }else{
         // 非微信链接分享
         this.linkCopy();  // 实例化copy链接方法
@@ -768,6 +774,7 @@ export default {
     },
     // 展示订单倒计时
     OrderCountdownFun(){
+      this.wxShare_show = false;
       this.OrderCountdownShow = true;
           if(!this.countdownStarts){
             // 订单倒计时
@@ -828,7 +835,12 @@ export default {
           this.goodName == '平安驾乘意外伤害保险' ? this.paymentPopup() : this.onPolicyPay();
         }
       })
-    }
+    },
+    // 图片条款预览
+    ProviewImg(imgPath) {
+      this.clauseShow = true; // 条款
+      this.clausePath = imgPath; //条款地址
+    },
   }
 };
 </script>

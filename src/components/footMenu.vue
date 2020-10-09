@@ -4,7 +4,7 @@
     <van-tabbar route v-model="active" class="tabbar" active-color="#5B8AFF" inactive-color="#8F8A8A">
     <van-tabbar-item
       replace
-      to="/home"
+      to="/"
     >
     <span>首页</span>
     <img

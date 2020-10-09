@@ -22,7 +22,7 @@
                     </div>
                 </div>
                 <div class="right">
-                    <img :src="baseImagePath + '/hsFileData/' + item.hSharePic" alt="" width="100%">
+                    <van-image lazy-load width="100%" :src="baseImagePath + '/hsFileData/' + item.hSharePic" />
                 </div>
             </router-link>
           </van-list>
@@ -41,7 +41,7 @@
                     </div>
                 </div>
                 <div class="right">
-                    <img :src="baseImagePath + '/hsFileData/' + item.hSharePic" alt="" width="100%">
+                    <van-image lazy-load width="100%" :src="baseImagePath + '/hsFileData/' + item.hSharePic" />
                 </div>
             </router-link>
           </van-list>
@@ -60,7 +60,7 @@
                     </div>
                 </div>
                 <div class="right">
-                    <img :src="baseImagePath + '/hsFileData/' + item.hSharePic" alt="" width="100%">
+                    <van-image lazy-load width="100%" :src="baseImagePath + '/hsFileData/' + item.hSharePic" />
                 </div>
             </router-link>
           </van-list>

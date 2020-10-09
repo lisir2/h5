@@ -122,7 +122,7 @@
             />
         </van-popup>
         <!-- 常用联系人 -->
-        <van-action-sheet title="选择常用联系人" v-model="showContacts" position="bottom" :style="{ height: '100%' }">
+        <van-action-sheet title="选择常用联系人" v-model="showContacts" position="bottom" :style="{ height: '100%',borderRadius:'0' }">
             <popupContacts @Contacts="ChildContacts"></popupContacts>
         </van-action-sheet>
     </div>
@@ -201,13 +201,6 @@ export default {
     };
   },
   mounted() {
-    /**
-     * 中科软可回溯
-     */
-    var infor={};
-    infor.start=1; //必传
-    initEasyReplay(infor);//初始化
-
     this.onePrice = this.$route.query.priceResult; // 价格
     this.productId = this.$route.query.productId; // 产品id
     this.planId = this.$route.query.planId; // 计划id
@@ -465,8 +458,11 @@ export default {
       } else {
         var Status = true;
         for (var i = 0; i < data.inserd.length; i++) {
-          if (data.inserd[i].insuredSex == "") {
-            this.Toast("请选择被保险人性别");
+          if (data.inserd[i].insuredRelationship == "") {
+            this.Toast("请选择与投保人关系");
+            Status = false;
+          } else if (data.inserd[i].insuredName == "") {
+            this.Toast("请输入被保人姓名");
             Status = false;
           } else if (data.inserd[i].insuredCertificateType == "") {
             this.Toast("请选择被保险人证件类型");

@@ -227,7 +227,7 @@
           <div v-if="goodName == '安联臻爱医疗保险感恩版'" v-show="renewalOfInsurance == true">
             <van-checkbox v-model="checked" style="margin: 0.4rem 0.2rem 0.8rem;">
               我已阅读并同意
-              <span style="color: rgb(0, 140, 255);" @click="showFile('AnLianRenewalInsurance.pdf')">《客户授权委托书和代扣服务协议》</span>
+              <span style="color: rgb(0, 140, 255);" @click="$showFile('AnLianRenewalInsurance.pdf')">《客户授权委托书和代扣服务协议》</span>
             </van-checkbox>
           </div>
           <!-- 安联臻爱医疗保险感恩版展示代扣服务协议 -->
@@ -292,7 +292,7 @@
               </div>
           </van-action-sheet>
           <!-- 常用联系人 -->
-          <van-action-sheet title="选择常用联系人" v-model="showContacts" position="bottom" :style="{ height: '100%' }">
+          <van-action-sheet title="选择常用联系人" v-model="showContacts" position="bottom" :style="{ height: '100%',borderRadius:'0' }">
             <popupContacts @Contacts="ChildContacts"></popupContacts>
           </van-action-sheet>
       </div>
@@ -424,13 +424,6 @@ export default {
       });
   },
   mounted() {
-    /**
-     * 中科软可回溯
-     */
-    var infor={};
-    infor.start=1; //必传
-    initEasyReplay(infor);//初始化
-    
     this.onePrice = this.$route.query.priceResult; // 价格
     this.productId = this.$route.query.productId; // 产品id
     this.planId = this.$route.query.planId; // 计划id
@@ -1116,19 +1109,6 @@ export default {
     AreaShow() {
       this.areaShow = true;
     },
-    // pdf本地预览
-    showFile(url) {
-      event.stopPropagation();
-      layer.open({
-        type: 1,
-        title: "信息(点击“+”号放大查看条款)",
-        area: ["100%", "100%"], //宽高
-        content:
-          "<iframe src='./static/pdf/web/viewer.html?file=" +
-          url +
-          "' style='width:100%;height:100%'></iframe>"
-      });
-    }
   }
 };
 </script>

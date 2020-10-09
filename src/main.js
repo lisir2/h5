@@ -18,7 +18,7 @@ import './assets/style/common.scss';
 import 'lib-flexible'
 import md5 from "js-md5";
 import VConsole from 'vconsole';  // 测试日志打印
-if (store.state.VConsole){
+if (store.state.VConsole) {
   new VConsole();
 }
 // vant UI 组件
@@ -37,7 +37,7 @@ import { Area } from 'vant';
 import { ActionSheet } from 'vant';
 import { Picker } from 'vant';
 import { Overlay } from 'vant';
-import { RadioGroup} from 'vant';
+import { RadioGroup } from 'vant';
 import { Radio } from 'vant';
 import { Stepper } from 'vant';
 import { Icon } from 'vant';
@@ -58,23 +58,25 @@ import { DropdownMenu, DropdownItem } from "vant";
 import { NoticeBar } from 'vant';
 import { Tag } from "vant";
 import { Rate } from 'vant';
-import { SwitchCell } from 'vant';
 import { Button } from 'vant';
 import clipboard from 'clipboard';
 import { NumberKeyboard } from 'vant';
 import { IndexBar, IndexAnchor } from 'vant';
 import { ImagePreview } from 'vant';
+import { Lazyload } from 'vant';
+import { Switch } from 'vant';
 
 // 头像剪切js
-import clipper from '../static/cropperjs/cropper.js'
+import clipper from '../static/cropperjs/cropper.js';
 
 // 全局注册
+Vue.use(Lazyload);
 Vue.use(ImagePreview);
 Vue.use(IndexBar);
 Vue.use(IndexAnchor);
 Vue.use(NumberKeyboard);
 Vue.use(Button);
-Vue.use(SwitchCell)
+Vue.use(Switch);
 Vue.use(Rate);
 Vue.use(Tag);
 Vue.use(NoticeBar);
@@ -125,14 +127,15 @@ Vue.prototype.is_weixn = is_weixn;
 Vue.prototype.Toast = Toast;
 Vue.prototype.timestampToTime = timestampToTime;
 Vue.prototype.qs = qs;
-Vue.prototype.accMul = accMul; 
-Vue.prototype.blurAdjust = blurAdjust; 
+Vue.prototype.accMul = accMul;
+Vue.prototype.blurAdjust = blurAdjust;
 Vue.prototype.Utils = Utils;
 Vue.prototype.$dialog = Dialog;
 Vue.prototype.clipboard = clipboard;
 Vue.prototype.$ImagePreview = ImagePreview;
-Vue.prototype.$getSign = getSign; // 进行微信签名、微信分享
-Vue.prototype.floatMultiply = floatMultiply;  // js乘法 丢失精度问题
+Vue.prototype.$WXShare = WXShare; // 进行微信签名、微信分享
+Vue.prototype.floatMultiply = floatMultiply;  // js乘法 丢失精度问题 
+Vue.prototype.$showFile = showFile;
 
 
 // params:要传的参数 encrypt:要加密的参数（密码） 包含在params对象里面
@@ -172,7 +175,7 @@ function getCookie(name) {
   return (arr = document.cookie.match(reg)) ? unescape(arr[2]) : '';
 }
 // 删除cookie
-function delCookie(name,domain,value = '') {
+function delCookie(name, domain, value = '') {
   var exdate = new Date();
   exdate.setDate(exdate.getDate() - 1);
   if (name != null && domain) {
@@ -332,74 +335,8 @@ function blurAdjust(e) {
   }, 100)
 }
 
-/**
- * 签名 分享函数
- * @param {*} title  分享标题
- * @param {*} descript  分享描述
- * @param {*} ShareImage  分享路径
- * @param {*} ShareLink  //分享链接
- * @param {*} ShareSuccess  分享成功回调
- */
-function getSign(title, descript, ShareImage, ShareLink, ShareSuccess) {
-  var link = location.href;
-  $.ajax({
-    type: "get",
-    url: "/openapi/wechat/auth/getSign",
-    async: false,
-    cache: false,
-    data: { link: encodeURIComponent(link) },
-    dataType: "json",
-    success: function (result) {
-      if (result.code == 20000) {
-        // 微信签名
-        wx.config({
-          debug: false,
-          appId: result.appId,
-          timestamp: result.sign.timestamp,
-          nonceStr: result.sign.nonceStr,
-          signature: result.sign.signature,
-          jsApiList: ["checkJsApi", "invokeMiniProgramAPI", "onMenuShareTimeline", "onMenuShareAppMessage", "onMenuShareQQ", "onMenuShareWeibo", "onMenuShareQZone", "hideMenuItems", "showMenuItems", "hideAllNonBaseMenuItem", "showAllNonBaseMenuItem", "translateVoice", "startRecord", "stopRecord", "onVoiceRecordEnd", "playVoice", "onVoicePlayEnd", "pauseVoice", "stopVoice", "uploadVoice", "downloadVoice", "chooseImage", "previewImage", "uploadImage", "downloadImage", "getNetworkType", "openLocation", "getLocation", "hideOptionMenu", "showOptionMenu", "closeWindow", "scanQRCode", "chooseWXPay", "openProductSpecificView", "addCard", "chooseCard", "openCard"]
-        });
-
-        // 进行分享
-        wx.ready(function () {
-          window.wechatShareData = {
-            title: title, // 分享标题
-            desc: descript, // 分享描述
-            link: ShareLink, // 分享链接
-            imgUrl: ShareImage, // 分享图标
-            type: 'link', // 分享类型,music、video或link，不填默认为link 
-            dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
-            success: function () {   //分享成功回调事件
-              console.log('分享成功');
-              console.log(ShareSuccess);
-              if (ShareSuccess){
-                ShareSuccess();
-              }
-            },
-            cancel: function () {   //分享失败回调事件
-              console.log('分享失败');
-            }
-          }
-          wx.updateAppMessageShareData(wechatShareData); // “分享给朋友”及“分享到QQ”按钮的分享内容
-          wx.updateTimelineShareData(wechatShareData); // “分享到朋友圈”及“分享到QQ空间”
-          wx.onMenuShareTimeline(wechatShareData); // 分享到朋友圈
-          wx.onMenuShareAppMessage(wechatShareData); // 分享给朋友
-          wx.onMenuShareQQ(wechatShareData); // 分享到QQ
-          wx.onMenuShareWeibo(wechatShareData); // 分享到腾讯微博
-          wx.onMenuShareQZone(wechatShareData); // 分享到QQ空间
-        });
-      } else {
-        console.log('页面加载失败')
-      }
-    }, error: function (data) {
-      console.log('连接失败')
-    }
-  });
-}
-
 // 静默授权
-function SilentAuthorization(){
+function SilentAuthorization() {
   // 微信静默授权
   var appid = store.state.appid;
   if (is_weixn()) {
@@ -420,6 +357,103 @@ function SilentAuthorization(){
   }
 };
 
+/**
+ * 
+ * @param {*} url pdf弹窗地址
+ */
+function showFile(url) {
+  event.stopPropagation();
+  layer.open({
+    type: 1,
+    title: "信息(点击“+”号放大查看条款)",
+    area: ["100%", "100%"], //宽高
+    content:
+      "<iframe src='./static/pdf/web/viewer.html?file=" +
+      url +
+      "' style='width:100%;height:100%'></iframe>"
+  });
+}
+
+/**
+ * 签名 分享函数
+ * @param {*} title  分享标题
+ * @param {*} descript  分享描述
+ * @param {*} ShareImage  分享路径
+ * @param {*} ShareLink  //分享链接
+ * @param {*} ShareSuccess  分享成功回调 js-sdk 1.4之后没有分享成功回调了
+ */
+function WXShare(title, descript, ShareImage, ShareLink, ShareSuccess) {
+  var link = location.href;
+  $.ajax({
+    type: "get",
+    url: "/openapi/wechat/auth/getSign",
+    async: false,
+    cache: false,
+    data: { link: encodeURIComponent(link) },
+    dataType: "json",
+    success: function (result) {
+      if (result.code == 20000) {
+        console.log('签名重新调用wx.config方法');
+        // 微信签名
+        wx.config({
+          debug: false,
+          appId: result.appId,
+          timestamp: result.sign.timestamp,
+          nonceStr: result.sign.nonceStr,
+          signature: result.sign.signature,
+          jsApiList: ["checkJsApi", "invokeMiniProgramAPI", "onMenuShareTimeline", "onMenuShareAppMessage", "onMenuShareQQ", "onMenuShareWeibo", "onMenuShareQZone", "hideMenuItems", "showMenuItems", "hideAllNonBaseMenuItem", "showAllNonBaseMenuItem", "translateVoice", "startRecord", "stopRecord", "onVoiceRecordEnd", "playVoice", "onVoicePlayEnd", "pauseVoice", "stopVoice", "uploadVoice", "downloadVoice", "chooseImage", "previewImage", "uploadImage", "downloadImage", "getNetworkType", "openLocation", "getLocation", "hideOptionMenu", "showOptionMenu", "closeWindow", "scanQRCode", "chooseWXPay", "openProductSpecificView", "addCard", "chooseCard", "openCard", "updateAppMessageShareData", "updateTimelineShareData"]
+        });
+
+
+        // 进行分享
+        wx.ready(function () {
+          window.wechatShareData = {
+            title: title, // 分享标题
+            desc: descript, // 分享描述
+            link: ShareLink, // 分享链接
+            imgUrl: ShareImage, // 分享图标
+            isFirstWXShare: true,
+            type: 'link', // 分享类型,music、video或link，不填默认为link 
+            dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+            success: function () {   //分享成功回调事件
+              console.log('分享成功');
+              if (ShareSuccess) {
+                ShareSuccess();
+              }
+            },
+            cancel: function () {   //分享失败回调事件
+              console.log('分享失败');
+            }
+          }
+          wx.updateAppMessageShareData(wechatShareData); //自定义“分享给朋友”及“分享到QQ”按钮的分享内容（1.4.0）
+          wx.updateTimelineShareData(wechatShareData); //自定义“分享到朋友圈”及“分享到QQ空间”按钮的分享内容（1.4.0）
+          wx.onMenuShareTimeline(wechatShareData); // 分享到朋友圈
+          wx.onMenuShareAppMessage(wechatShareData); // 分享给朋友
+          wx.onMenuShareQQ(wechatShareData); // 分享到QQ
+          wx.onMenuShareWeibo(wechatShareData); // 分享到腾讯微博
+          wx.onMenuShareQZone(wechatShareData); // 分享到QQ空间
+        });
+
+        // 判断当前客户端版本是否支持指定JS接口
+        // wx.checkJsApi({
+        //   jsApiList: [
+        //     'updateAppMessageShareData',
+        //     'updateTimelineShareData',
+        //     'onMenuShareAppMessage',
+        //     'onMenuShareTimeline'
+        //   ], success: function (res) {
+        //     console.log(res);
+        //   }
+        // })
+      } else {
+        console.log('页面加载失败')
+      }
+    }, error: function (data) {
+      console.log('连接失败')
+    }
+  });
+}
+
 // 路由守卫页面 以下页面必须登录才可进入
 var guardLogin = [
   'personalPolicy',  //个险保单页面
@@ -427,7 +461,7 @@ var guardLogin = [
   'vehiclePolicy',  //车险保单页面
   'activityZone',  //活动专区页面
   'topContacts', //活动专区页面
-  'Customize',  //常用联系人页面
+  'Customize',  //私人订制
   'personalData',  //个人资料页面
   'policyInquiry',  //保单管理页面
   'inviteFriends',   //邀请好友页面
@@ -443,17 +477,18 @@ var guardLogin = [
 
 // 全局路由守卫
 router.beforeEach((to, from, next) => {
+  console.log(to);
   console.log(to.name, from.name);
-  
+
   // 全局路由监听，保存到stare里面
   store.commit("toRouter", to.name);
   store.commit("fromRouter", from.name);
   // 微信端首页 和 我的页面调用手动授权
-  if (to.name == 'home' || to.name == 'mine') {
+  if (to.name == '/' || to.name == 'mine') {
     next();// 必须使用 next ,执行效果依赖 next 方法的调用参数
     if (is_weixn()) {
       // 判读cookie里面是否有 wxopenid 有的话不进行授权
-      if (getCookie('wxopenId') == ""){
+      if (getCookie('wxopenId') == "") {
         // 授权成功之后，页面路径里面会有openid保存到cookie，没有openid则进行授权
         if (!getQueryString("openid")) {
           var url = encodeURIComponent(location.href);
@@ -463,10 +498,8 @@ router.beforeEach((to, from, next) => {
         }
       }
     }
-  // 当从产品详情页面跳转到登录页面时，强制改变路由到产品列表页面
-  } else if (to.name == 'loginMain' && from.name == 'productdetail'){
-    next('classlist');
-  } else if (guardLogin.includes(to.name)) { // 特殊页面必须登录（路由时判断是否登录） 
+    // 特殊页面必须登录（路由时判断是否登录） 
+  } else if (guardLogin.includes(to.name)) {
     var loginStatus = getCookie('ZB_JUSER_Mid'); //登录状态
     var activityCode = getQueryString("activityCode"); //渠道码
     var phone = getQueryString("phone"); //手机号
@@ -474,18 +507,18 @@ router.beforeEach((to, from, next) => {
       if (is_weixn()) {
         // 判断微信授权的openid 和 数据库存的 openid是否相同 (openId：登录的时候后台返回openid进行保存，wxopenId：授权之后的openid保存)
         if (getCookie('openId') == "" || getCookie('openId') == getCookie('wxopenId')) {
-          if (to.name == "policyInquiry"){
+          if (to.name == "policyInquiry") {
             // 保单查询单独处理
-            policyInquiry(function(){
+            policyInquiry(function () {
               next();
             });
-          } else{
+          } else {
             next();
           }
-        }else{
+        } else {
           Notify('当前账户已存在关联，请联系保险经纪网客服');
         }
-      }else{
+      } else {
         if (to.name == "policyInquiry") {
           // 保单查询单独处理
           policyInquiry(function () {
@@ -495,21 +528,23 @@ router.beforeEach((to, from, next) => {
           next();
         }
       }
-    // 渠道查询个险保单不需要登录
-    } else if (activityCode != '' && phone != '' && to.name == 'personalPolicy'){
+      // 渠道查询个险保单不需要登录
+    } else if (activityCode != '' && phone != '' && to.name == 'personalPolicy') {
       next();
-    } else{
-      if (to.name == "policyInquiry"){
-        next({ path: 'loginRegister', query: { routerLink:'policyInquiry'} });
+    } else {
+      if (to.name == "policyInquiry") {
+        next({ path: 'loginRegister', query: { routerLink: 'policyInquiry' } });
       } else if (to.name == "myCard") {
         next({ path: 'loginRegister', query: { routerLink: 'myCard' } });
-      } else{
+      } else if (to.name == "Customize") {
+        next({ path: 'loginRegister', query: to.query });
+      } else {
         next({ path: 'loginRegister' });
       }
     }
     // 静默授权
     SilentAuthorization();
-  } else if (to.name == 'FreeInsurance'){  //活动页面，免费领取保险
+  } else if (to.name == 'FreeInsurance') {  //活动页面，免费领取保险
     next();// 必须使用 next ,执行效果依赖 next 方法的调用参数
     if (is_weixn()) {
       var returnUrl = location.href;
@@ -520,12 +555,12 @@ router.beforeEach((to, from, next) => {
         window.location.href = url;
       } else {
         // 如果cookie里面有headImgUrl，不用授权，(领取保险需要获取用户微信头像，如果已经有了，不用进行授权)
-        if (!getCookie('headImgUrl')){
+        if (!getCookie('headImgUrl')) {
           getOpenId(getQueryString("code"));
         }
       }
     }
-  } else{
+  } else {
     next();// 必须使用 next ,执行效果依赖 next 方法的调用参数
     // 如果用户拒绝了授权，或进入到其他路由(除了home、mine、FreeInsurance其他使用静默授权)，判断本地是否有(wxopenid),没有则进行静默授权
     SilentAuthorization();

@@ -98,7 +98,7 @@
             <a
               v-for="(item , index) in newClauseList"
               href="javascript:void(0)"
-              @click="showFile(link + item.termFilePath)"
+              @click="ProviewImg(link + item.termFilePath)"
               :key="index"
             >《{{item.termName}}》</a>
           </div>
@@ -120,6 +120,16 @@
     <van-popup v-model="loadingShow" :lock-scroll="false" style="background-color: transparent;" :close-on-click-overlay="false">
             <!-- 加载动画 -->
         <van-loading size="24px" vertical color="#1989fa">数据加载中...</van-loading>
+    </van-popup>
+    <!-- 图片条款弹出框 -->
+    <van-popup v-model="clauseShow" :style="{ width:'100%',height: '100%'}"  closeable close-icon="close">
+        <div :style="{ width:'100%',height: '100%',overflow:'scroll'}">
+        <van-image :src="clausePath" :style="{ width:'100%'}">
+            <template v-slot:loading>
+                <van-loading type="spinner" size="20" />
+            </template>
+        </van-image>
+        </div>
     </van-popup>
   </div>
 </template>
@@ -177,6 +187,8 @@ export default {
       planId: "", //计划id
       loadingShow: false, //加载动画
       inserdNum: "", //被保险人个数
+      clauseShow: false, // 条款
+      clausePath: '', //条款地址
     };
   },
   mounted() {
@@ -447,16 +459,9 @@ export default {
           });
       }
     },
-    showFile(url) {
-      layer.open({
-        type: 1,
-        title: "信息(点击“+”号放大查看条款)",
-        area: ["100%", "100%"], //宽高
-        content:
-          "<iframe src='./static/pdf/web/viewer.html?file=" +
-          url +
-          "' style='width:100%;height:100%'></iframe>"
-      });
+    ProviewImg(url) {
+      this.clauseShow = true; // 条款
+      this.clausePath = url; //条款地址
     }
   }
 };

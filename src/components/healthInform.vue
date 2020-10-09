@@ -85,13 +85,6 @@ export default {
   },
   computed: {},
   mounted() {
-    /**
-     * 中科软可回溯
-     */
-    var infor={};
-    infor.start=1; //必传
-    initEasyReplay(infor);//初始化
-
     var that = this;
     this.Router = this.$route.query.Router;
     this.productId = this.$route.query.productId;

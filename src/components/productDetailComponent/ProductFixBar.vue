@@ -43,7 +43,7 @@
       </van-tabbar>
     </div>
     <!-- 客服页面 -->
-    <van-popup v-model="serviceShow" closeable :style="{width:'100%',height:'100%'}" get-container="body" @close="closeService" :lazy-render="true">
+    <van-popup v-model="serviceShow" closeable :style="{width:'100%',height:'100%'}" get-container="body" :lazy-render="true">
       <chat v-if="serviceShow"></chat>
     </van-popup>
   </div>
@@ -65,11 +65,10 @@ export default {
   props:['IsAgentShare','agentUserInfo','priceResult','preparation','WhetherTheShelf','WhetherBuy','SetInsuranceConsultantShow','SetWxShareShow','showPopup'],
   computed: {},
   methods: {
-    closeService(){
-      this.serviceShow = false;
-      // endRecord();
-      // console.log('在结束时调用结束录制方法endRecord();');
-    }
+    // closeService(){
+    //   stopRecord();
+    //   console.log('结束客服页面录制stopRecord("service")');
+    // }
   },
   mounted(){
     

@@ -17,7 +17,12 @@ export default {
         }
     },
     mounted(){
-        
+        startRecord("service");
+        console.log('客服页面调用 startRecord("service");');
+    },
+    beforeDestroy(){
+        stopRecord("service");
+        console.log('结束客服页面录制stopRecord("service")');
     },
     methods:{
 

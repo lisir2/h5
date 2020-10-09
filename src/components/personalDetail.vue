@@ -102,7 +102,7 @@
             v-for="(item,index) in newClauseList"
             :key="index+1000"
             href="javascript:void(0)"
-            @click="showFile(link+item.termFilePath)"
+            @click="ProviewImg(link+item.termFilePath)"
           >《{{item.termName}}》</a>
         </div>
       </div>
@@ -115,6 +115,16 @@
     >
       <input type="text" name="params" :value="params" />
     </form>
+    <!-- 图片条款弹出框 -->
+    <van-popup v-model="clauseShow" :style="{ width:'100%',height: '100%'}"  closeable close-icon="close">
+        <div :style="{ width:'100%',height: '100%',overflow:'scroll'}">
+        <van-image :src="clausePath" :style="{ width:'100%'}">
+            <template v-slot:loading>
+                <van-loading type="spinner" size="20" />
+            </template>
+        </van-image>
+        </div>
+    </van-popup>
   </div>
 </template>
 
@@ -153,6 +163,8 @@ export default {
       brandId: "",  // 品牌id
       catId: "",  // 分类id
       typeId: "", // 类型id
+      clauseShow: false, // 条款
+      clausePath: '', //条款地址
     };
   },
   computed: {},
@@ -465,16 +477,9 @@ export default {
     onClickLeft() {
       this.$router.go(-1);
     },
-    showFile(url) {
-      layer.open({
-        type: 1,
-        title: "信息(点击“+”号放大查看条款)",
-        area: ["100%", "100%"], //宽高
-        content:
-          '<iframe src="./static/pdf/web/viewer.html?file=' +
-          url +
-          '" style="width:100%;height:100%"></iframe>'
-      });
+    ProviewImg(url) {
+      this.clauseShow = true; // 条款
+      this.clausePath = url; //条款地址
     },
     // 保单下载
     DownLoadPolicy(policyNumber, index0) {

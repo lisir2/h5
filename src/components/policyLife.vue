@@ -7,8 +7,7 @@
     <ul>
       <li v-for="item in items" :key="item.id">
         <router-link :to="{path:'/productdetail',query:{productId:item.id}}">
-          <img :src="baseImgPath" alt v-if="!item.indexHotProdImg" />
-          <img :src="baseImagePath+item.indexHotProdImg" alt />
+          <van-image lazy-load :src="baseImagePath+item.indexHotProdImg" width="100%"/>
           <div class="contentBox">
             <div class="content">
               <p class="productName">{{item.goodName}}</p>

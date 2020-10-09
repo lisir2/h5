@@ -104,7 +104,7 @@ export default {
       var title = '加入环晟保险经纪网代理人,出单笔笔奖励';
       // 分享链接
       var shareLink = location.protocol + "//" + location.host + "/hsfront/AgentRegister?invitationCode=" + invitationCode;
-      this.$getSign(title, descript, ShareImage, shareLink);
+      this.$WXShare(title, descript, ShareImage, shareLink);
     }
   },
   methods: {

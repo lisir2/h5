@@ -39,7 +39,7 @@
               <ul>
                 <li v-for="item in goodList" :key="item.id+1000" @click="goDetail(item.id)">
                   <div class="leftDiv">
-                    <van-image width="100%" :src="imgCommonPath +item.goodSmallImg" />
+                    <van-image lazy-load width="100%" :src="imgCommonPath +item.goodSmallImg" />
                     <span>{{item.goodInsuranceCompanyAlias}}</span>
                   </div>
                   <div class="rightDiv">
@@ -75,7 +75,7 @@
               <ul>
                 <li v-for="item in goodList1" :key="item.id" @click="goDetail(item.id)">
                   <div class="leftDiv">
-                    <van-image width="100%" :src="imgCommonPath+item.goodSmallImg" />
+                    <van-image lazy-load width="100%" :src="imgCommonPath+item.goodSmallImg" />
                     <span>{{item.goodInsuranceCompanyAlias}}</span>
                   </div>
                   <div class="rightDiv">
@@ -111,7 +111,7 @@
               <ul>
                 <li v-for="item in goodList2" :key="item.id" @click="goDetail(item.id)">
                   <div class="leftDiv">
-                    <van-image width="100%" :src="imgCommonPath+item.goodSmallImg" />
+                    <van-image lazy-load width="100%" :src="imgCommonPath+item.goodSmallImg" />
                     <span>{{item.goodInsuranceCompanyAlias}}</span>
                   </div>
                   <div class="rightDiv">
@@ -147,7 +147,7 @@
               <ul>
                 <li v-for="item in goodList3" :key="item.id" @click="goDetail(item.id)">
                   <div class="leftDiv">
-                    <van-image width="100%" :src="imgCommonPath+item.goodSmallImg" />
+                    <van-image lazy-load width="100%" :src="imgCommonPath+item.goodSmallImg" />
                     <span>{{item.goodInsuranceCompanyAlias}}</span>
                   </div>
                   <div class="rightDiv">
@@ -183,7 +183,7 @@
               <ul>
                 <li v-for="item in goodList4" :key="item.id" @click="goDetail(item.id)">
                   <div class="leftDiv">
-                    <van-image width="100%" :src="imgCommonPath+item.goodSmallImg" />
+                    <van-image lazy-load width="100%" :src="imgCommonPath+item.goodSmallImg" />
                     <span>{{item.goodInsuranceCompanyAlias}}</span>
                   </div>
                   <div class="rightDiv">
@@ -219,7 +219,7 @@
               <ul>
                 <li v-for="item in goodList5" :key="item.id" @click="goDetail(item.id)">
                   <div class="leftDiv">
-                    <van-image width="100%" :src="imgCommonPath+item.goodSmallImg" />
+                    <van-image lazy-load width="100%" :src="imgCommonPath+item.goodSmallImg" />
                     <span>{{item.goodInsuranceCompanyAlias}}</span>
                   </div>
                   <div class="rightDiv">
@@ -255,7 +255,7 @@
               <ul>
                 <li v-for="item in goodList6" :key="item.id" @click="goDetail(item.id)">
                   <div class="leftDiv">
-                    <van-image width="100%" :src="imgCommonPath+item.goodSmallImg" />
+                    <van-image lazy-load width="100%" :src="imgCommonPath+item.goodSmallImg" />
                     <span>{{item.goodInsuranceCompanyAlias}}</span>
                   </div>
                   <div class="rightDiv">
@@ -291,7 +291,7 @@
               <ul>
                 <li v-for="item in goodList7" :key="item.id" @click="goDetail(item.id)">
                   <div class="leftDiv">
-                    <van-image width="100%" :src="imgCommonPath+item.goodSmallImg" />
+                    <van-image lazy-load width="100%" :src="imgCommonPath+item.goodSmallImg" />
                     <span>{{item.goodInsuranceCompanyAlias}}</span>
                   </div>
                   <div class="rightDiv">
@@ -325,7 +325,7 @@
               <ul>
                 <li v-for="item in goodList8" :key="item.id" @click="goDetail(item.id)">
                   <div class="leftDiv">
-                    <van-image width="100%" :src="imgCommonPath+item.goodSmallImg" />
+                    <van-image lazy-load width="100%" :src="imgCommonPath+item.goodSmallImg" />
                     <span>{{item.goodInsuranceCompanyAlias}}</span>
                   </div>
                   <div class="rightDiv">
@@ -359,7 +359,7 @@
               <ul>
                 <li v-for="item in goodList9" :key="item.id" @click="goDetail(item.id)">
                   <div class="leftDiv">
-                    <van-image width="100%" :src="imgCommonPath+item.goodSmallImg" />
+                    <van-image lazy-load width="100%" :src="imgCommonPath+item.goodSmallImg" />
                     <span>{{item.goodInsuranceCompanyAlias}}</span>
                   </div>
                   <div class="rightDiv">
@@ -391,7 +391,6 @@
         <van-nav-bar :title="commissionGoodName" class="CommissionNavVar" />
         <CommissionPopUp :commissionInfo="commissionInfo"></CommissionPopUp>
       </van-popup>
-      <!-- <van-loading type="spinner" color="#1989fa" v-show="show"/> -->
     </div>
   </div>
 </template>

@@ -16,7 +16,6 @@
         placeholder="请输入短信验证码"
         maxlength="6"
         v-model="disabledVal"
-        @keyup="disabledShow"
       >
         <van-button
           v-show="sendAuthCode"
@@ -66,14 +65,16 @@ export default {
     this.productId = this.$route.query.productId;
     console.log(this.productId);
   },
-  methods: {
-    disabledShow() {
-      if (this.disabledVal.length == 6) {
-        return (this.isAble = false);
+  watch:{
+    disabledVal(val, oldVal){
+      if (val.length == 6) {
+        this.isAble = false;
       } else {
-        return (this.isAble = true);
+        this.isAble = true;
       }
-    },
+    }
+  },
+  methods: {
     onClickLeft() {
       this.$router.go(-1);
     },

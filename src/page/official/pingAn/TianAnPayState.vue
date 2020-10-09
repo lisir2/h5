@@ -11,7 +11,7 @@
 
 <script>
     import api from "../../../fetch/api";
-import { Toast } from 'vant';
+    import { Toast } from 'vant';
     export default {
         components: {
 
@@ -26,19 +26,21 @@ import { Toast } from 'vant';
 
         },
         mounted(){
-            // 根据流水号查询订单是否支付成功
-            var params = this.sign({ merchantSeq:this.merchantSeq });
-            api.TianAnPayState(params).then(res => {
-                if(res.code == 20000){
-                    if(res.data.orderPaymentStatus == 2){
-                        this.$router.push('/paySuccess');
-                    }else if(res.data.orderPaymentStatus == 1){
-                        this.$router.push("/paymentFailure");
+            setTimeout(() => {
+                // 根据流水号查询订单是否支付成功
+                var params = this.sign({ merchantSeq:this.merchantSeq });
+                api.TianAnPayState(params).then(res => {
+                    if(res.code == 20000){
+                        if(res.data.orderPaymentStatus == 2){
+                            this.$router.push('/paySuccess');
+                        }else if(res.data.orderPaymentStatus == 1){
+                            this.$router.push("/paymentFailure");
+                        }
+                    }else{
+                        this.Toast(res.message);
                     }
-                }else{
-                    this.Toast(res.message);
-                }
-            })
+                })
+            }, 5000);
         },
         methods: {
 

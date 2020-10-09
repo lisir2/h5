@@ -102,10 +102,6 @@ export default {
       });
 
       api.getLogin(args).then(res => {
-        console.log(res);
-        if (res.code == "20006") {
-          this.Toast.fail(res.message);
-        }
         if (res.code == "20000") {
           this.Toast.success(res.message);
           this.setCookie("openId", res.data.openId, "7");
@@ -118,6 +114,8 @@ export default {
           } else {
             this.$router.push({ path: "/mine" });
           }
+        }else{
+          this.Toast.fail(res.message);
         }
       });
     }
@@ -213,6 +211,7 @@ body {
       height: 88px;
       .van-icon {
         height: 100%;
+        line-height: initial!important;
       }
       .van-image {
         height: 100%;

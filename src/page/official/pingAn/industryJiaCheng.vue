@@ -237,14 +237,6 @@ export default {
     
   },
   mounted() {
-    /**
-     * 中科软可回溯
-     */
-    var infor={};
-    infor.start=1; //必传
-    initEasyReplay(infor);//初始化
-
-
     this.onePrice = this.$route.query.priceResult; // 价格
     this.productId = this.$route.query.productId; // 产品id
     this.planId = this.$route.query.planId; // 计划id

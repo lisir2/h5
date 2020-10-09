@@ -11,7 +11,7 @@
                 <ul>
                     <p v-if="this.mainList == ''" style="margin:15px 30px;">暂无条款</p>
                     <div v-for="item in mainList" :key="item.id">
-                        <van-cell :title="item.termName" is-link @click="showPDF(link+item.termFilePath)"/>
+                        <van-cell :title="item.termName" is-link @click="ProviewImg(link+item.termFilePath)"/>
                         <!-- <van-cell :title="item.termFileNo"/> -->
                     </div>
                     <!-- <van-cell title="除外责任" is-link /> -->
@@ -132,14 +132,24 @@
                 </ul>  -->
             </div>
         </div>
-        <!-- 条款弹出框 -->
-        <van-popup
-            v-model="ClauseShow"
+        <!-- pdf条款弹出框 -->
+        <!-- <van-popup
+            v-model="clauseShow"
             :style="{ width: '100%',height: '100%' }"
             closeable
         >
             <van-nav-bar title="信息(点击“+”号放大查看条款)" />
             <iframe v-if="ClauseShow" id="pdf" :src='"./static/pdf/web/viewer.html?file=" + pdfFilePath' style='width:100%;height:93%'></iframe>
+        </van-popup> -->
+        <!-- 图片条款弹出框 -->
+        <van-popup v-model="clauseShow" :style="{ width:'100%',height: '100%'}"  closeable close-icon="close">
+            <div :style="{ width:'100%',height: '100%',overflow:'scroll'}">
+            <van-image :src="clausePath" :style="{ width:'100%'}">
+                <template v-slot:loading>
+                    <van-loading type="spinner" size="20" />
+                </template>
+            </van-image>
+            </div>
         </van-popup>
     </div>
 </template>
@@ -172,8 +182,9 @@
                productName:this.$route.query.productName,
                Termslist:"",
                link:this.$store.state.JumpPath, //页面跳转路径
-               ClauseShow: false, // 条款展示
                pdfFilePath:'', // pdf地址
+               clauseShow: false, // 条款
+               clausePath: '', //条款地址
             };
         },
         mounted(){
@@ -279,6 +290,11 @@
             onClickLeft() {
                this.$router.go(-1);
             },
+            // 预览图片
+            ProviewImg(imgPath) {
+                this.clausePath = imgPath;
+                this.clauseShow = true;
+            },
             showPDF(url){
                 this.pdfFilePath = url;
                 this.ClauseShow = true;
@@ -337,6 +353,5 @@
                }
             }
         }
-           
     }
 </style>

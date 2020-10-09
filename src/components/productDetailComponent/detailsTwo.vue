@@ -754,8 +754,7 @@ export default {
     },
     // 预览图片
     ProviewImg(img) {
-      var ProviewImgPath =
-        this.$store.state.baseImagePath + "/hsFileData" + img;
+      var ProviewImgPath = this.$store.state.baseImagePath + "/hsFileData" + img;
       this.InsuranceConsultant_show = false;
 
       this.$ImagePreview({

@@ -5,7 +5,11 @@ export default [
     {
         path: '/StudyArticle',
         name: 'StudyArticle',
-        component: resolve => require(['@/components/StudyModule/StudyArticle'], resolve)
+        component: resolve => require(['@/components/StudyModule/StudyArticle'], resolve),
+        meta: {
+            title: '文章详情',
+            allowShare: true
+        }
     },
     // 进入公众号继续阅读
     {

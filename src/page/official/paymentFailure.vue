@@ -28,8 +28,10 @@
             /**
              * 中科软可回溯
              */
-            initEasyReplay(2);
-            console.log('支付失败页面调用initEasyReplay(2);');
+            var infor = {};
+            infor.start=2;
+            initEasyReplay(infor);
+            console.log('支付失败页面调用initEasyReplay()方法;');
         },
         // 销毁前清楚计时器
         beforeDestroy(){

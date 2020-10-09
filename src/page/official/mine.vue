@@ -1,8 +1,8 @@
 <template>
     <div class="userlogin">
         <van-nav-bar title="保险经纪网" class="header_mine">
-             <van-icon :name="topicon1" slot="right" @click="setup" />
-             <van-icon :name="topicon2" slot="right" style="margin-left:5px;" @click="chat"/>
+             <van-icon :name="topicon1" slot="right" @click="setup" size="18"/>
+             <van-icon :name="topicon2" slot="right" style="margin-left:5px;" @click="chat" size="18"/>
         </van-nav-bar>
         <user-login @update:userDetails="(val)=>{userinfo = val;}"></user-login>
         <my-policy :userinfo="userinfo"></my-policy>

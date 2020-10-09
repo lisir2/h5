@@ -9,7 +9,12 @@
                 <van-cell title="个人资料" style="border-bottom: 0.1px solid #ebedf0!important;" is-link/>
             </a>
             <van-cell-group v-if="auditStatus">
-                <van-switch-cell v-model="case1" active-color="#F99A31" inactive-color="rgb(230,230,230)" title="佣金比例显示" @change="changeCell"/>
+                <van-cell title="佣金比例显示">
+                    <!-- 使用 right-icon 插槽来自定义右侧图标 -->
+                    <template #right-icon>
+                        <van-switch v-model="case1" size="25" active-color="#F99A31" inactive-color="rgb(230,230,230)" @change="changeCell"/>
+                    </template>
+                </van-cell>
                 <!-- <van-switch-cell v-model="case2" active-color="#F99A31" inactive-color="rgb(230,230,230)" title="消息通知" />
                 <van-switch-cell v-model="case3" active-color="#F99A31" inactive-color="rgb(230,230,230)" title="个人展示" /> -->
             </van-cell-group>

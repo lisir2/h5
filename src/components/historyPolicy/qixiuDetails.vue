@@ -1,6 +1,6 @@
-<!-- 组件说明 个险保单详情-->
+<!-- 组件说明 汽修保单页面-->
 <template>
-  <div class="personalDetail">
+  <div class="qixiuDetails">
     <van-nav-bar title="详情" left-arrow @click-left="onClickLeft"></van-nav-bar>
     <div class="mainBox">
       <p class="productName">{{policyDetailView.goodName}}</p>
@@ -288,7 +288,7 @@ export default {
       this.$router.go(-1);
     },
     showFile(url) {
-       let urlStart = url.split('.com')[0];
+      let urlStart = url.split('.com')[0];
       let urlEnd = url.split('.com')[1];
       let urlResult = urlStart +'.com/hsFileData' +urlEnd
       layer.open({
@@ -332,7 +332,7 @@ export default {
 </script>
 
 <style lang='scss' scoped>
-.personalDetail {
+.qixiuDetails {
   background: #fff;
   .van-cell__title span{
     font-weight: 700!important;

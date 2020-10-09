@@ -175,6 +175,7 @@ export default {
     }
     .van-icon {
       height: 100%;
+      line-height: initial!important;
     }
     .van-icon::before {
       vertical-align: middle;

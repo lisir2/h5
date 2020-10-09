@@ -148,6 +148,9 @@ export default {
     background: white;
     margin-top: 38px;
   }
+  .van-icon {
+    line-height: initial!important;
+  }
   .van-button--primary {
     background: #f99a31;
     border: 0;

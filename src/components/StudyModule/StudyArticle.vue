@@ -268,7 +268,7 @@ export default {
         var title = res.classroomTitle;
         // 分享链接
         var shareLink = location.origin + location.pathname + '?id='+ this.getQueryString('id') +'&readingQuantity='+ this.getQueryString('readingQuantity') + '&articleShareMid=' + this.getCookie('ZB_JUSER_Mid');
-        this.$getSign(title, descript, ShareImage, shareLink);
+        this.$WXShare(title, descript, ShareImage, shareLink);
       }
       
       // 阅读数加一
@@ -467,7 +467,7 @@ export default {
       }
     }
     .card {
-      height: 150px;
+      overflow: hidden;
       background: linear-gradient(
         -8deg,
         rgba(251, 89, 0, 1),
@@ -640,7 +640,6 @@ export default {
     padding: 30px 0 69px;
     .detailData {
       padding: 0 30px;
-      width: 100%;
       overflow: hidden;
       .imgLeft {
         width: 100px;

@@ -34,6 +34,7 @@
               v-model="verificationCode"
               center
               clearable
+              maxlength="6"
               :left-icon="yzmicon"
               placeholder="请输入短信验证码"
             >
@@ -270,6 +271,9 @@ export default {
         margin: auto;
       }
     }
+  }
+  .van-icon {
+    line-height: initial!important;
   }
   .van-hairline--top-bottom::after,
   .van-hairline-unset--top-bottom::after {

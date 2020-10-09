@@ -44,12 +44,12 @@
             </router-link>
         </li>
          <li>
-            <div @click="development">
-            <!-- <a href="javascriput:;" @click="Customize"> -->
+            <!-- <div @click="development"> -->
+            <router-link :to="{path:'Customize',query:{routerLink:'Customize'}}">
                 <img src="../assets/images/home/home-icon2.png"/>
                 <span>私人定制</span>
-            <!-- </a> -->
-            </div>
+            </router-link>
+            <!-- </div> -->
         </li>
     </ul>
     <!-- <div class="colorBlock"></div> -->

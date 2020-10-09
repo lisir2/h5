@@ -165,7 +165,7 @@ export default {
     }
     body{
         .van-popup--center{
-            width: 80%;
+            width: 65%;
             border-radius: 10px;
             padding: 60px;
             padding-bottom: 40px;

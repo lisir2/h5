@@ -73,7 +73,6 @@ const CustomizeMessage = () => import('@/components/CustomizeMessage');
 const QualificationLicence = () => import('@/components/QualificationLicence');
 const contactUs = () => import('@/components/contactUs');
 const editContacts = () => import('@/components/editContacts');
-const paymentSuccess = () => import('@/page/official/paymentSuccess');
 const billingDetails = () => import('@/components//billingDetails');
 const DetailedInstructions = () => import('@/components/DetailedInstructions');
 const alterName = () => import('@/components/alterName');
@@ -124,13 +123,17 @@ let routes = [
     path: '/',
     name: 'footMenu',
     component: resolve => require(['@/components/footMenu.vue'], resolve),
-    redirect:'/home',
+    // redirect:'/home',
     children:[
       // 首页页面
       {
-        path: '/home',
+        path: '/',
         name: 'home',
         component: Home,
+        meta: {
+          title: '保险经纪网',
+          allowShare: true
+        }
       },
       // 分类页面
       {
@@ -142,7 +145,7 @@ let routes = [
       {
         path: '/mine',
         name: 'mine',
-        component: Mine
+        component: Mine,
       },
       // 学习页面
       {
@@ -162,6 +165,10 @@ let routes = [
     path: '/productdetail',
     name: 'productdetail',
     component: Productdetail,
+    meta: {
+      title: '产品详情',
+      allowShare: true
+    }
   },
   // 登录注册主页面
   {
@@ -337,7 +344,10 @@ let routes = [
   {
     path: '/policyPreview',
     name: 'policyPreview',
-    component: policyPreview
+    component: policyPreview,
+    meta: {
+      allowShare: true
+    }
   },
   //通用配置投保页面
   {
@@ -497,12 +507,6 @@ let routes = [
     path: '/contactUs',
     name: 'contactUs',
     component: contactUs,
-  },
-  // 支付成功回调页面
-  {
-    path: '/paymentSuccess',
-    name: 'paymentSuccess',
-    component: paymentSuccess,
   },
   // 修改昵称
   {
@@ -691,6 +695,9 @@ let routes = [
     path: '/FreeInsurance',
     name: 'FreeInsurance',
     component: FreeInsurance,
+    meta: {
+      allowShare: true
+    }
   },
   // 领取成功页面
   {

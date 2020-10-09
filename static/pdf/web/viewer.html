@@ -31,13 +31,13 @@ See https://github.com/adobe-type-tools/cmap-resources
   <script src="../build/pdf.js"></script>
   <script src="./viewer.js"></script>
   <script src="../../js/jquery.min.js"></script>
+  <script type="text/javascript" src="https://download.sinosofter.com.cn/easyreplay/vuejs/sdk/v3.1/easyreplay-vue.js"></script>
   <!-- 第三方可回溯【中科软】 -->
   <script type="text/javascript" src="https://download.sinosofter.com.cn/easyreplay/vuejs/sdk/v3.1_proxy/easyreplayext-vue.js"></script>
-  <!-- 第三方可回溯【中科金】 -->
 
 </head>
 
-<body tabindex="1" class="loadingInProgress">
+<body tabindex="1" class="loadingInProgress" onunload="goodbye()">
   <div id="outerContainer">
 
     <div id="sidebarContainer">
@@ -385,6 +385,12 @@ See https://github.com/adobe-type-tools/cmap-resources
      **/
     startRecord("pdf");
     console.log('打开pdf调用 startRecord("pdf");');
+  }
+
+  // 离开当前页面
+  function goodbye(){
+    console.log("离开页面");
+    stopRecord("pdf");
   }
 </script>
 </html>

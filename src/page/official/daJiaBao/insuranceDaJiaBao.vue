@@ -215,7 +215,7 @@
               </div>
           </van-action-sheet>
             <!-- 常用联系人 -->
-            <van-action-sheet title="选择常用联系人" v-model="showContacts" position="bottom" :style="{ height: '100%' }">
+            <van-action-sheet title="选择常用联系人" v-model="showContacts" position="bottom" :style="{ height: '100%',borderRadius:'0' }">
                 <popupContacts @Contacts="ChildContacts"></popupContacts>
             </van-action-sheet>
         </div>
@@ -305,14 +305,6 @@
             }
         },
         mounted() {
-            /**
-             * 中科软可回溯
-             */
-            var infor={};
-            infor.start=1; //必传
-            initEasyReplay(infor);//初始化
-
-            console.log(this.$route.query)
             this.onePrice = this.$route.query.priceResult;  // 价格
             this.productId = this.$route.query.productId;  // 产品id
             this.planId = this.$route.query.planId;  // 计划id

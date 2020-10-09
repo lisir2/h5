@@ -52,8 +52,10 @@
             /**
              * 中科软可回溯
              */
-            initEasyReplay(2);
-            console.log('支付成功页面调用initEasyReplay(2);');
+            var infor = {};
+            infor.start=2;
+            initEasyReplay(infor);
+            console.log('支付成功页面调用initEasyReplay()方法;');
 
             var that = this;
             that.timeInterval = setInterval(() => {

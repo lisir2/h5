@@ -1,18 +1,20 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+
 Vue.use(Vuex);
 const store = new Vuex.Store({
     state: {   //要设置的全局访问的state对象
+        orderSysSource: "HS_formal", // 可回溯渠道来源 正式:HS_formal 测试:HS_test
         healthAssort: '',//是否有健康告知 2:无 0:总体 1:逐一
-        baseImagePath: 'https://test.zgbxjj.com',  //所有图片路径
-        bannerImagePath: 'https://test.zgbxjj.com/hsFileData',  //banner图路径
-        JumpPath:'https://test.zgbxjj.com',  //弹出pdf文件路径
-        upLoadImg: 'https://test.zgbxjj.com',  //上传图片路径
-        appid: 'wx09f6d091df15b1f8', //测试:wx09f6d091df15b1f8    正式:wxec19abc8795c0014
+        baseImagePath: 'https://www.zgbxjj.com',  //所有图片路径
+        bannerImagePath: 'https://www.zgbxjj.com/hsFileData',  //banner图路径
+        JumpPath:'https://www.zgbxjj.com',  //弹出pdf文件路径
+        upLoadImg: 'https://www.zgbxjj.com',  //上传图片路径
+        appid: 'wxec19abc8795c0014', //测试:wx09f6d091df15b1f8    正式:wxec19abc8795c0014
         productDetail:{},  //产品详情
         toRouter:'', //将要去的路由
         fromRouter:'', //来自哪个路由
-        VConsole: false, //是否开启手机端 VConsole 测试打印
+        VConsole: false, //是否开启手机端 VConsole 测试打印 (如果要开启vconsole，就把index.html 可回溯的js注释掉，因为可回溯不支持vconsole)
         // 多多宝签约银行
         bankCode: {
             1002: "中国工商银行",
@@ -29,7 +31,7 @@ const store = new Vuex.Store({
             1018: "华夏银行",
             1119: "宁波银行",
             2001: "中国邮政储蓄银行"
-        }
+        },
     },
     getters:{   //实时监听state值的变化(最新状态)
         
@@ -50,7 +52,7 @@ const store = new Vuex.Store({
         // 来自哪个路由
         fromRouter(state, value) {
             state.fromRouter = value;
-        }
+        },
     },
     actions: {//自定义触发mutations里函数的方法，context与store 实例具有相同方法和属性
         
