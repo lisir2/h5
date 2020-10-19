@@ -1,4 +1,4 @@
-import api from '@/fetch/api'
+ import api from '@/fetch/api'
 
 // 验证手机号
 export function isPhoneNumber(mobile) {
@@ -71,7 +71,7 @@ export function isIdCard(pId) {
     mon = d.getMonth(),
     day = d.getDate();
 
-  if (year != yyyy || mon != mm || day != dd || d > now || year < 1940)
+  if (year != yyyy || mon != mm || day != dd || d > now)
     return false;
 
   for (var i = 0, ret = 0; i < 17; i++)

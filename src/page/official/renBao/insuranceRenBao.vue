@@ -99,12 +99,12 @@
         </div>  
         <!-- 三级联动 -->
         <van-popup v-model="areaShow" position="bottom">
-        <van-area
-            :area-list="areaList"
-            @confirm="confirm"
-            @cancel="cancel"
-            :item-height="35"
-        />
+          <van-area
+              :area-list="areaList"
+              @confirm="confirm"
+              @cancel="cancel"
+              :item-height="35"
+          />
         </van-popup>
         <!-- 弹出遮罩层 -->
         <van-popup v-model="loadingShow" :lock-scroll="false" style="background-color: transparent;" :close-on-click-overlay="false">
@@ -583,7 +583,7 @@ export default {
     color: #0c0c0c;
     font-size: 32px;
     font-weight: 600;
-    padding: 0 20px;
+    padding: 0 30px;
     background-color: #F7F7F7;
   }
   .policyTitle {

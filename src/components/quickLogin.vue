@@ -149,6 +149,9 @@ export default {
 }
 .quickLogin {
   background: #fff;
+  .van-icon {
+    line-height: initial !important;
+  }
   .van-nav-bar__title {
     font-size: 28px;
   }

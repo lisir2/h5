@@ -409,8 +409,6 @@ export default {
         ","
       ); //第一个计划的默认规格值
     }
-    // this.planId = this.prodPlanList[0].id; //默认展示第一个计划 id
-    // this.$emit("SecurityLines", this.planId);
     // 默认调第一个计划的规格
     this.changeQuota(this.prodPlanList[0].id, 0);
 
@@ -660,12 +658,12 @@ export default {
           InsuranceScope, //承保范围
           shareMid: this.shareMid
         };
-        // 如果传id，路由时添加SaveSpecification(多多宝产品页面价格试算规格保存，投保页面展示)参数
+        // 如果有id参数，路由时添加SaveSpecification(多多宝产品页面价格试算规格保存，投保页面展示)参数
         if (id) {
           params.SaveSpecification = id;
         }
 
-        // 进入投保页面之前删除健康告知内容，以防获取到其他产品的健康告知
+        // 进入投保页面之前删除用户选择健康告知信息，以防获取到其他产品的健康告知
         this.delCookie("healthAnswer");
 
         // 是否有健康告知
@@ -703,12 +701,7 @@ export default {
           } else if (this.goodInsuranceCompanyAlias == "中国平安") {
             //平安财险
             if (this.goodName == "浙江省汽车维修企业员工团体意外伤害保险") {
-              this.isRouter(
-                isHealthAssort,
-                "/healthInform",
-                "/insurancePingAnQiXiu",
-                "浙江省汽车维修企业员工团体意外伤害保险"
-              );
+              this.isRouter(isHealthAssort, "/healthInform", "/insurancePingAnQiXiu", "浙江省汽车维修企业员工团体意外伤害保险");
             } else if (
               this.goodName == "平安驾驶人考试不通过补考费用损失保险"
             ) {
@@ -745,6 +738,8 @@ export default {
               this.goodName,
               this.DDB_Save_Specification_id
             );
+          } else if (this.goodInsuranceCompanyAlias == "国寿财险") {
+            this.isRouter(isHealthAssort, "/healthInform", "/insuranceRenShou");
           } else {
             this.isRouter(isHealthAssort, "/healthInform", "/insurancePingAn");
           }
@@ -971,7 +966,7 @@ export default {
       padding: 15px 0px;
     }
     .leftTitle {
-      flex: 2.3;
+      flex: 1.5;
     }
     p {
       // text-indent: 2em;
@@ -1096,26 +1091,16 @@ export default {
       margin-top: 8px;
     }
     .van-tag--danger {
-      width: 140px !important;
-      height: 50px;
-      text-align: center;
-      line-height: 50px;
       background-color: #008cff;
-      font-size: 24px;
-      border-radius: 0;
-      font-weight: 500;
-      color: #fdfdfe;
-      border-radius: 10px;
-      position: relative;
-      top: 6px;
-      padding: 0 10px;
     }
-    .van-tag--normal {
+    .van-tag--normal{
+      background-color: #8080ff;
+    }
+    .van-tag--normal,.van-tag--danger {
       width: 140px !important;
       height: 50px;
       line-height: 50px;
       text-align: center;
-      background-color: #8080ff;
       font-size: 24px;
       border-radius: 0;
       font-weight: 500;
@@ -1124,6 +1109,7 @@ export default {
       position: relative;
       top: 6px;
       padding: 0 10px;
+      display: block;
     }
   }
   .van-nav-bar__title {

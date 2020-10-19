@@ -619,15 +619,6 @@ export default {
           ) {
             this.Toast("请输入被保险人手机号码");
             Status = false;
-          } else if (data.inserd[i].subjectJson.housesAgeLimit == "") {
-            this.Toast("请输入房屋年龄");
-            Status = false;
-          } else if (
-            data.inserd[i].subjectJson.housesAgeLimit > 30 ||
-            data.inserd[i].subjectJson.housesAgeLimit < 0
-          ) {
-            this.Toast("房屋年龄限制1-30年之间");
-            Status = false;
           } else if (data.inserd[i].subjectJson.citySelect == "") {
             this.Toast("请选择省市区");
             Status = false;
@@ -827,7 +818,7 @@ export default {
     color: #0c0c0c;
     font-size: 32px;
     font-weight: 600;
-    padding: 0 20px;
+    padding: 0 30px;
     background-color: #F7F7F7;
   }
   .policyTitle {

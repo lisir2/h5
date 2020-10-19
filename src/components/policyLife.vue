@@ -125,7 +125,7 @@ export default {
         -webkit-box-orient: vertical;
         line-height: 36px;
         letter-spacing: 1px;
-        min-height: 1rem;
+        height: 72px;
         li {
           width: auto;
         }

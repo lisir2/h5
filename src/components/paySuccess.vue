@@ -4,8 +4,8 @@
         <van-nav-bar title="支付成功" left-arrow @click-left="onClickLeft">
            <!-- <van-icon name="share" slot="right" /> -->
         </van-nav-bar>
-        <div class="Part1">
-            <van-Image width="58" height="58" :src="successicon" />
+        <div class="submitSuccess">
+            <van-Image width="1.54rem" height="1.54rem" :src="successicon" />
             <span class="part_span">提交成功!</span>
         </div>
         <!-- <p class="paytext1">订单号：<span>5446853256456</span></p> -->
@@ -21,12 +21,12 @@
             <input type="button" class="lookmore" value="查看保单">
         </router-link>
         <p class="paytext4"><span>{{time}}</span>秒后自动跳转到我的页面</p>
-        <div class="Part2">
-             <van-Image width="163" height="163" :src="bxjjw" />
-             <div>
-                <p>关注微信公众号可随时查看保单提供理赔服务</p>
-                <input type="text" value="一键保存" readonly>
-             </div>
+        <div class="OfficialAccounts">
+            <van-Image width="4.4rem" height="4.4rem" :src="bxjjw" />
+            <div>
+            <p>关注微信公众号可随时查看保单提供理赔服务</p>
+            <input type="text" value="一键保存" readonly>
+            </div>
         </div>
     </div>
 </template>
@@ -86,8 +86,9 @@
         .paySuccess{
             text-align: center;
             background: #fff;
-            .Part1{
-                margin:55px 215px;
+            .submitSuccess{
+                width: 4.5rem;
+                margin:55px auto;
                 overflow: hidden;
                 .van-image{
                     float: left;
@@ -139,8 +140,9 @@
                 border-radius: 50px;
                 margin-top: 53px;
             }
-            .Part2{
-                margin: 20px 30px;
+            .OfficialAccounts{
+                width: 9rem;
+                margin: 20px auto;
                 display: flow-root;
                 van-image{
                     float: left;

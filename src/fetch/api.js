@@ -6,9 +6,9 @@ import { Toast } from 'vant';
 const apiBaseUrl = process.env.NODE_ENV === 'production' ? '' : '/api'
 
 // axios 配置
-axios.defaults.timeout = 60000
-axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8'
-axios.defaults.baseURL = ''
+axios.defaults.timeout = 60000;
+axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
+axios.defaults.baseURL = '';
 
 // POST传参序列化
 axios.interceptors.request.use((config) => {

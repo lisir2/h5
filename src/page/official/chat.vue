@@ -13,7 +13,7 @@ export default {
     name:"chat",
     date(){
         return{
-
+            
         }
     },
     mounted(){

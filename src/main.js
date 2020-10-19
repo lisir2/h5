@@ -345,7 +345,7 @@ function SilentAuthorization() {
       if (!getQueryString("code")) {
         var local = location.href;
         // 授权获取code
-        var url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + appid + "&redirect_uri=" + encodeURIComponent(local) + "&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect";
+        var url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + appid + "&redirect_uri=" + encodeURIComponent(local) + "&response_type=code&scope=snsapi_base&connect_redirect=1&state=STATE#wechat_redirect";
         window.location.href = url;
       } else if (getQueryString("code")) {
         // 获取路径上的code
@@ -477,14 +477,17 @@ var guardLogin = [
 
 // 全局路由守卫
 router.beforeEach((to, from, next) => {
-  console.log(to);
   console.log(to.name, from.name);
+
+  // if (to.meta.title) {//判断是否有标题
+  //   document.title = to.meta.title
+  // }
 
   // 全局路由监听，保存到stare里面
   store.commit("toRouter", to.name);
   store.commit("fromRouter", from.name);
-  // 微信端首页 和 我的页面调用手动授权
-  if (to.name == '/' || to.name == 'mine') {
+  // 微信端首页、我的页面、产品详情页面 调用手动授权
+  if (to.name == 'home' || to.name == 'mine') { // || to.name == 'productdetail'
     next();// 必须使用 next ,执行效果依赖 next 方法的调用参数
     if (is_weixn()) {
       // 判读cookie里面是否有 wxopenid 有的话不进行授权
@@ -551,7 +554,7 @@ router.beforeEach((to, from, next) => {
       var appid = store.state.appid;
       // 手动授权获取用户信息 免费领取保险
       if (!getQueryString("code")) {
-        var url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + appid + "&redirect_uri=" + encodeURIComponent(returnUrl) + "&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect";
+        var url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + appid + "&redirect_uri=" + encodeURIComponent(returnUrl) + "&response_type=code&scope=snsapi_userinfosnsapi_userinfo&state=STATE#wechat_redirect";
         window.location.href = url;
       } else {
         // 如果cookie里面有headImgUrl，不用授权，(领取保险需要获取用户微信头像，如果已经有了，不用进行授权)

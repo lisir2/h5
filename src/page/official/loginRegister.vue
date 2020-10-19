@@ -108,6 +108,9 @@ export default {
 <style lang="scss">
 .loginRegister {
   background: #fff;
+  .van-field{
+    height: 100%;
+  }
   .van-swipe {
     margin: 30px;
     height: 150px;
@@ -135,7 +138,9 @@ export default {
     border-radius: 50px;
     width: 618px;
     margin: auto;
-    padding: 18px 32px;
+    padding: 0 32px;
+    display: flex;
+    align-items: center;
   }
   .van-button--primary {
     background: #f99a31;
@@ -170,9 +175,6 @@ export default {
   }
   .phoneIcon {
     height: 88px;
-    .van-field {
-      height: 88px;
-    }
     .van-icon {
       height: 100%;
       line-height: initial!important;

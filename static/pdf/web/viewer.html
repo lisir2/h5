@@ -31,10 +31,33 @@ See https://github.com/adobe-type-tools/cmap-resources
   <script src="../build/pdf.js"></script>
   <script src="./viewer.js"></script>
   <script src="../../js/jquery.min.js"></script>
-  <script type="text/javascript" src="https://download.sinosofter.com.cn/easyreplay/vuejs/sdk/v3.1/easyreplay-vue.js"></script>
-  <!-- 第三方可回溯【中科软】 -->
-  <script type="text/javascript" src="https://download.sinosofter.com.cn/easyreplay/vuejs/sdk/v3.1_proxy/easyreplayext-vue.js"></script>
+  <script>
+    // 动态加载js
+    function loadJS(url, callback) {
+      var script = document.createElement('script'),
+        fn = callback || function () { };
+      script.type = 'text/javascript';
+      //IE
+      if (script.readyState) {
+        script.onreadystatechange = function () {
+          if (script.readyState == 'loaded' || script.readyState == 'complete') {
+            script.onreadystatechange = null;
+            fn();
+          }
+        };
+      } else {
+        //其他浏览器
+        script.onload = function () {
+          fn();
+        };
+      }
+      script.src = url;
+      document.getElementsByTagName('head')[0].appendChild(script);
+    }
 
+    loadJS(location.origin + '/hsfront/easyreplay/sdk/easyreplay-vue-min.js');
+    loadJS(location.origin + '/hsfront/easyreplay/sdk/easyreplayext-vue-min.js');
+  </script>
 </head>
 
 <body tabindex="1" class="loadingInProgress" onunload="goodbye()">

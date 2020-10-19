@@ -133,18 +133,17 @@
             </div>
         </div>
         <!-- pdf条款弹出框 -->
-        <!-- <van-popup
-            v-model="clauseShow"
+        <van-popup
+            v-model="ClauseShow"
             :style="{ width: '100%',height: '100%' }"
             closeable
         >
-            <van-nav-bar title="信息(点击“+”号放大查看条款)" />
-            <iframe v-if="ClauseShow" id="pdf" :src='"./static/pdf/web/viewer.html?file=" + pdfFilePath' style='width:100%;height:93%'></iframe>
-        </van-popup> -->
+            <iframe v-if="ClauseShow" id="pdf" :src='"./static/pdfh5/pdf.html?file=" + pdfFilePath' style='width:100%;height:93%'></iframe>
+        </van-popup>
         <!-- 图片条款弹出框 -->
-        <van-popup v-model="clauseShow" :style="{ width:'100%',height: '100%'}"  closeable close-icon="close">
+        <van-popup v-model="imgClauseShow" :style="{ width:'100%',height: '100%'}"  closeable close-icon="close">
             <div :style="{ width:'100%',height: '100%',overflow:'scroll'}">
-            <van-image :src="clausePath" :style="{ width:'100%'}">
+            <van-image :src="pdfFilePath" :style="{ width:'100%'}">
                 <template v-slot:loading>
                     <van-loading type="spinner" size="20" />
                 </template>
@@ -183,8 +182,8 @@
                Termslist:"",
                link:this.$store.state.JumpPath, //页面跳转路径
                pdfFilePath:'', // pdf地址
-               clauseShow: false, // 条款
-               clausePath: '', //条款地址
+               ClauseShow: false, // 条款展示
+               imgClauseShow: false, // 图片格式条款展示
             };
         },
         mounted(){
@@ -290,14 +289,15 @@
             onClickLeft() {
                this.$router.go(-1);
             },
-            // 预览图片
-            ProviewImg(imgPath) {
-                this.clausePath = imgPath;
-                this.clauseShow = true;
-            },
+            // pdf预览
             showPDF(url){
                 this.pdfFilePath = url;
                 this.ClauseShow = true;
+            },
+            // 预览图片
+            ProviewImg(imgPath) {
+                this.pdfFilePath = imgPath;
+                this.imgClauseShow = true;
             }
         }
     }

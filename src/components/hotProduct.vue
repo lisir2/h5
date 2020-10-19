@@ -139,7 +139,6 @@ export default {
 <style lang="scss" >
 .hot-menu .van-tab {
   display: flex;
-  padding: 0 !important;
   position: relative;
   z-index: 1 !important;
 }

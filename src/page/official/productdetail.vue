@@ -272,10 +272,10 @@ export default {
         });
       });
 
-      // 没有from路由
-      if(!this.$store.state.fromRouter || this.$store.state.fromRouter == 'classlist' || this.$store.state.fromRouter == 'home' || this.$store.state.fromRouter == 'home' || this.$store.state.fromRouter == 'StudyArticle' || this.$store.state.fromRouter == 'personalPolicy' || this.$store.state.fromRouter == 'industryPolicy' || this.$store.state.fromRouter == 'vehiclePolicy'){
+      // 刷新页面，或者首次进入产品详情页面
+      if(!this.$store.state.fromRouter || this.$store.state.fromRouter == 'classlist' || this.$store.state.fromRouter == 'home' || this.$store.state.fromRouter == 'home' || this.$store.state.fromRouter == 'StudyArticle' || this.$store.state.fromRouter == 'personalPolicy' || this.$store.state.fromRouter == 'industryPolicy' || this.$store.state.fromRouter == 'vehiclePolicy' || this.$store.state.fromRouter == 'InsuranceSale'){
         this.InsuredInformShow = true; // 投保流程告知
-        console.log('刷新了页面，或者从产品列表进入，调用录制初始方法');
+        console.log('调用可回溯录制初始方法');
         // 调用可回溯初始化方法【中科软】 v4.5
         var infor = {};
         infor.productVersion = res.data.prodGoods.goodVersion; //销售产品版本

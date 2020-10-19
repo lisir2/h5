@@ -84,49 +84,60 @@ export default {
   },
   props: ["commissionInfo"],
   computed: {},
-  methods: {},
-  mounted() {
-    this.commissionInfo.forEach(element => {
-      // 唯一标识由佣金名称、险种、保障期限、缴费期限 四个组成
-      var tempList = [];
-      tempList.push(element.commissionName);
-      tempList.push(element.guaranteePeriod);
-      tempList.push(element.paymentTerm);
-      tempList.push(element.riskName);
-      if (this.commissionIdArr.length == 0) {
-        this.commissionIdArr.push({ id: tempList, content: {} });
-      } else {
-        var ArrInclude = true;
+  methods: {
+    // 渲染佣金
+    renderCommission(){
+      this.commissionIdArr = [];
+      this.commissionInfo.forEach(element => {
+        // 唯一标识由佣金名称、险种、保障期限、缴费期限 四个组成
+        var tempList = [];
+        tempList.push(element.commissionName);
+        tempList.push(element.guaranteePeriod);
+        tempList.push(element.paymentTerm);
+        tempList.push(element.riskName);
+        if (this.commissionIdArr.length == 0) {
+          this.commissionIdArr.push({ id: tempList, content: {} });
+        } else {
+          var ArrInclude = true;
+          // 判断此标识是否已经包含
+          this.commissionIdArr.forEach(ele => {
+            if (this.Utils.isContained(ele.id, tempList)) {
+              ArrInclude = false;
+            }
+          });
+          // 不包含加入idArr数组
+          if (ArrInclude) {
+            this.commissionIdArr.push({ id: tempList, content: {} });
+          }
+        }
+      });
+
+      // 解析自己需要的数据格式
+      this.commissionInfo.forEach(element => {
+        // 唯一标识由佣金名称、险种、保障期限、缴费期限 四个组成
+        var tempList = [];
+        tempList.push(element.commissionName);
+        tempList.push(element.guaranteePeriod);
+        tempList.push(element.paymentTerm);
+        tempList.push(element.riskName);
+
         // 判断此标识是否已经包含
         this.commissionIdArr.forEach(ele => {
           if (this.Utils.isContained(ele.id, tempList)) {
-            ArrInclude = false;
+            ele.content[element.commissionYears] = element;
           }
         });
-        // 不包含加入idArr数组
-        if (ArrInclude) {
-          this.commissionIdArr.push({ id: tempList, content: {} });
-        }
-      }
-    });
-
-    // 解析自己需要的数据格式
-    this.commissionInfo.forEach(element => {
-      // 唯一标识由佣金名称、险种、保障期限、缴费期限 四个组成
-      var tempList = [];
-      tempList.push(element.commissionName);
-      tempList.push(element.guaranteePeriod);
-      tempList.push(element.paymentTerm);
-      tempList.push(element.riskName);
-
-      // 判断此标识是否已经包含
-      this.commissionIdArr.forEach(ele => {
-        if (this.Utils.isContained(ele.id, tempList)) {
-          ele.content[element.commissionYears] = element;
-        }
       });
-    });
-  }
+    }
+  },
+  watch:{
+    commissionInfo(val){
+      this.renderCommission();
+    }
+  },
+  mounted() {
+    this.renderCommission();
+  },
 };
 </script>
 
@@ -137,7 +148,7 @@ export default {
     padding-bottom: 40px;
     p {
       color: #f99a31;
-      font-size: 28px;
+      font-size: 26px;
       margin-top: 0;
       margin-bottom: 20px;
     }
@@ -147,13 +158,13 @@ export default {
       overflow: scroll;
       display: block;
       thead {
-        width: 2000px;
+        width: 2030px;
         background-color: #4d648e !important;
         display: block;
         color: white;
       }
       tbody {
-        width: 2000px;
+        width: 2030px;
         height: 450px;
         display: block;
         overflow: auto;
@@ -167,7 +178,7 @@ export default {
       tr {
         display: inline-block;
         padding: 20px 0px;
-        font-size: 30px;
+        font-size: 26px;
         border: 1px solid #cad9ea;
         th {
           width: 214px;
@@ -197,7 +208,7 @@ export default {
         width: 100%;
         display: inline-block;
         padding: 20px 0px;
-        font-size: 30px;
+        font-size: 26px;
         border: 1px solid #cad9ea;
         th {
           width: 30%;

@@ -11,7 +11,7 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/api':{
-        target: 'https://test.zgbxjj.com', // 测试 https://www.zgbxjj.com 后台服务器url 
+        target: 'https://test.zgbxjj.com', // 测试 https://test.zgbxjj.com 后台服务器url 
         changeOrigin: true,
         pathRewrite:{
           '^/api':''

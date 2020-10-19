@@ -957,7 +957,6 @@ export default {
           color: #666;
           display: -webkit-box;
           display: -moz-box;
-          white-space: pre-wrap;
           word-wrap: break-word;
           overflow: hidden;
           text-overflow: ellipsis;
@@ -973,7 +972,6 @@ export default {
             height: auto;
             display: -webkit-box;
             display: -moz-box;
-            white-space: pre-wrap;
             word-wrap: break-word;
             overflow: hidden;
             text-overflow: ellipsis;

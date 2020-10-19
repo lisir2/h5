@@ -842,7 +842,7 @@ export default {
     color: #0c0c0c;
     font-size: 32px;
     font-weight: 600;
-    padding: 0 20px;
+    padding: 0 30px;
     background-color: #F7F7F7;
   }
   .policyTitle {

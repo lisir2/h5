@@ -210,7 +210,7 @@ export default {
         maxDate: maxAge
       };
     },
-    // 立即投保
+    // 处理多多宝产品的业务（保存选择规格）立即投保
     goBuy() {
       var that = this;
       if (this.isGoBuy) {

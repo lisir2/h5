@@ -50,6 +50,7 @@ const insuranceAnlian = () => import('@/page/official/anlian/insuranceAnlian');
 const insuranceAnXin = () => import('@/page/official/anxin/insuranceAnXin');
 const insuranceDaJiaBao = () => import('@/page/official/daJiaBao/insuranceDaJiaBao');
 const insuranceRenBao = () => import('@/page/official/renBao/insuranceRenBao');
+const insuranceRenShou = () => import('@/page/official/renShou/insuranceRenShou');
 const insurancePingAnQiXiu = () => import('@/page/official/pingAn/insurancePingAnQiXiu');
 const insurancePingAnKaoShi = () => import('@/page/official/pingAn/insurancePingAnKaoShi');
 const insuranceLiBao = () => import('@/page/official/liBao/insuranceLiBao');
@@ -427,6 +428,11 @@ let routes = [
     path: '/insuranceRenBao',
     name: 'insuranceRenBao',
     component: insuranceRenBao
+  },
+  {//人寿财险
+    path: '/insuranceRenShou',
+    name: 'insuranceRenShou',
+    component: insuranceRenShou
   },
   {//众安保险
     path: '/insuranceZhongAn',

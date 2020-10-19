@@ -54,7 +54,7 @@
             <p class="right_three">
               <span class="minFee">
                 ￥{{item.price}}
-                <span style="font-size: 0.22rem;">起</span>
+                <span style="font-size: 11px;">起</span>
               </span>
             </p>
           </div>
@@ -538,104 +538,124 @@ export default {
     padding: 0 30px;
     position: relative;
     overflow: hidden;
-  }
-
-  .product .product_title {
-    width: 170px;
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    height: 70px;
-    margin: auto;
-    line-height: 70px;
-    z-index: 2;
-    background: #fff;
-    text-align: center;
-  }
-
-  .product .line {
-    width: 400px;
-    height: 2px;
-    background-color: #eeeeee;
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    margin: auto;
-  }
-
-  .product .titleBox {
-    position: relative;
-    height: 70px;
-    margin-bottom: 24px;
+    .product_title {
+      width: 170px;
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      height: 70px;
+      margin: auto;
+      line-height: 70px;
+      z-index: 2;
+      background: #fff;
+      text-align: center;
+    }
+    .line {
+      width: 400px;
+      height: 2px;
+      background-color: #eeeeee;
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      margin: auto;
+    }
+    .titleBox {
+      position: relative;
+      height: 70px;
+      margin-bottom: 24px;
+    }
   }
 
   .productItem {
     height: 250px;
     display: block;
+    .leftDiv {
+      width: 27%;
+      height: 100%;
+      float: left;
+      .tag {
+        text-align: center;
+        background: #f6f6f6;
+        border-radius: 10px;
+        height: 50px;
+        line-height: 50px;
+        color: #333;
+        font-size: 22px;
+        width: 100%;
+        font-weight: 600;
+        overflow:hidden; 
+        display:-webkit-box;            //将对象作为弹性伸缩盒子模型显示。
+        -webkit-box-orient:vertical;    //从上到下垂直排列子元素（设置伸缩盒子的子元素排列方式）
+        -webkit-line-clamp:1;  //规定行数
+
+      }
+    }
+    .rightDiv{
+      float: left;
+      width: 68%;
+      margin-left: 4%;
+      height: 100%;
+      .right_one {
+        font-size: 31px;
+        font-family: PingFang SC;
+        font-weight: 800;
+        color: rgba(51, 51, 51, 1);
+        margin-top: 10px;
+      }
+      .right_two {
+        min-height: 80px;
+        margin: 10px 0;
+        color: #666;
+        display: -webkit-box;
+        display: -moz-box;
+        word-wrap: break-word;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        font-size: 26px !important;
+        height: auto;
+        line-height: 36px;
+        li {
+          padding: 0;
+        }
+        p {
+          height: auto;
+          display: -webkit-box;
+          display: -moz-box;
+          word-wrap: break-word;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          -webkit-box-orient: vertical;
+          -webkit-line-clamp: 2;
+          font-size: 26px;
+          span {
+            font-size: 0.373333rem !important;
+          }
+          img {
+            width: 25px;
+            vertical-align: middle;
+            margin-top: -2px;
+            margin-right: 5px;
+          }
+        }
+      }
+      .right_three {
+        .minFee {
+          color: #fb8400;
+          font-weight: 700;
+          float: left;
+          font-size: 30px;
+        }
+      }
+    }
   }
 
-  .productItem .leftDiv {
-    width: 27%;
-    height: 100%;
-    float: left;
-  }
-
-  .productItem .leftDiv .tag {
-    text-align: center;
-    background: #f6f6f6;
-    border-radius: 10px;
-    height: 50px;
-    line-height: 50px;
-    color: #333;
-    font-size: 22px;
-    width: 100%;
-    font-weight: 600;
-    overflow:hidden; 
-    display:-webkit-box;            //将对象作为弹性伸缩盒子模型显示。
-    -webkit-box-orient:vertical;    //从上到下垂直排列子元素（设置伸缩盒子的子元素排列方式）
-    -webkit-line-clamp:1;  //规定行数
-
-  }
-
-  .productItem .rightDiv {
-    float: left;
-    width: 68%;
-    margin-left: 4%;
-    height: 100%;
-  }
-
-  .rightDiv .right_one {
-    font-size: 31px;
-    font-family: PingFang SC;
-    font-weight: 800;
-    color: rgba(51, 51, 51, 1);
-    margin-top: 10px;
-  }
-
-  .rightDiv .right_two {
-    height: 70px;
-    font-size: 24px;
-    font-weight: 500;
-    color: rgba(143, 143, 143, 1);
-    line-height: 36px;
-    margin: 10px 0;
-  }
-
-  .rightDiv .right_three .minFee {
-    color: #fb8400;
-    font-weight: 700;
-    float: left;
-    font-size: 30px;
-  }
-
-  /* 
-保险顾问
-*/
-
+  /* 保险顾问*/
   .insurdPerson {
     padding: 30px 0 69px;
     .detailData {

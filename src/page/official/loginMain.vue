@@ -149,7 +149,10 @@ body {
       border-radius: 50px;
       width: 618px;
       margin: auto;
-      padding: 18px 32px;
+      padding: 0 32px;
+      display: flex;
+      align-items: center;
+      height: 100%;
     }
     .van-button--primary {
       background: #f99a31;
