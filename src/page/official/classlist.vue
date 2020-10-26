@@ -385,7 +385,6 @@
           </van-tab>
         </van-tabs>
       </van-pull-refresh>
-      <foot-menu></foot-menu>
       <!-- 佣金展示内容 -->
       <van-popup v-model="commission_show" closeable :style="{ width: '85%' }" :round="true">
         <van-nav-bar :title="commissionGoodName" class="CommissionNavVar" />
@@ -396,14 +395,13 @@
 </template>
 
 <script>
-import FootMenu from "../../components/footMenu.vue";
 import api from "../../fetch/api";
 import $ from "jquery";
 import CommissionPopUp from "@/components/productDetailComponent/CommissionPopUp";
 
 export default {
   name: "classlist",
-  components: { FootMenu, CommissionPopUp },
+  components: { CommissionPopUp },
   data() {
     return {
       imgCommonPath: this.$store.state.baseImagePath,

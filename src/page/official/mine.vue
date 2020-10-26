@@ -6,20 +6,18 @@
         </van-nav-bar>
         <user-login @update:userDetails="(val)=>{userinfo = val;}"></user-login>
         <my-policy :userinfo="userinfo"></my-policy>
-        <foot-menu></foot-menu>
     </div>
 </template>
 <script>
-import FootMenu from '../../components/footMenu.vue'
-import UserLogin from '../../components/userLogin.vue'
-import MyPolicy from '../../components/myPolicy.vue'
+import UserLogin from '@/components/mine/userLogin.vue';
+import MyPolicy from '@/components/mine/myPolicy.vue';
 export default {
     name: 'mine',
-    components: {UserLogin,MyPolicy,FootMenu},
+    components: {UserLogin,MyPolicy},
     data(){
         return {
-            topicon1:require('../../assets/images/mine/topicon1.png'),
-            topicon2:require('../../assets/images/mine/topicon2.png'),
+            topicon1:require('@/assets/images/mine/topicon1.png'),
+            topicon2:require('@/assets/images/mine/topicon2.png'),
             userinfo:'',
         }
     },

@@ -72,8 +72,10 @@
                     <span>被保险人信息</span>
                 </p>
                 <ul>
-                    <li v-for="(item,index) in inserdList" :key="index" :style="item.colcode === 'workTypeName' ? 'height:2.3rem;' : ''">
-                        <span class="list_01" :style="item.colcode === 'workTypeName' ? 'line-height:1rem;' : ''">{{item.colname}}</span>
+                    <!-- <li v-for="(item,index) in inserdList" :key="index" :style="item.colcode === 'workTypeName' ? 'height:2.3rem;' : ''"> -->
+                    <li v-for="(item,index) in inserdList" :key="index" >
+                        <!-- <span class="list_01" :style="item.colcode === 'workTypeName' ? 'line-height:1rem;' : ''">{{item.colname}}</span> -->
+                        <span class="list_01" >{{item.colname}}</span>
                         <span class="list_02">
                             <!-- 被保险人姓名 -->
                             <div v-if="item.colcode === 'insuredName'">
@@ -122,7 +124,22 @@
                                 <van-icon name="arrow" />
                                 <!-- <input type="text" :placeholder="item.value" :name="item.colcode"> -->
                             </div>
-                            <!-- 安联职业分类 -->
+
+                            <!-- 学校类别 -->
+                            <div v-else-if="item.colcode === 'schoolType'">
+                                <van-action-sheet
+                                v-model="insuredSchoolType"
+                                :actions="item.value"
+                                cancel-text="取消"
+                                @select="inserdSelect_SchoolType"
+                                title="请选择学校类别"
+                                />
+                                <input type="text" placeholder="学校类别" @click="showSelect_SchoolType()" id="insuredSchoolType" :name="item.colcode" readonly :ref="item.colcode">
+                                <van-icon name="arrow" />
+                                <!-- <input type="text" :placeholder="item.value" :name="item.colcode"> -->
+                            </div>
+
+                            <!-- 职业分类 -->
                             <div v-else-if="item.colcode === 'workTypeName'">
                                 <input type="text" @click="ShowOccupation" :name=item.colcode :placeholder="item.value" readonly v-model="OccupationVal" :ref="item.colcode"> 
                             </div>
@@ -132,6 +149,7 @@
                             <div v-else>
                                 <input type="text" :placeholder="item.value" :class="item.colcode" :name="item.colcode" :ref="item.colcode">
                             </div>
+
                         </span>
                     </li>
                 </ul>
@@ -199,14 +217,16 @@
               <div class="AnLianOccupation" :title="OccupationData">
                   <ul class="Occupation_one" v-for="(item,index) in OccupationData" :key="index">
                       <!-- 一级职业 -->
-                      <li>{{item.trade}}</li>
+                      <li>{{item.classCode}}</li>
                       <div>
                           <!-- 二级职业 -->
-                          <li v-for="(items,index) in item.anLianSecondJobList" :key="index">
+                          <li v-for="(items,index) in item.secondBaseClassList" :key="index">
                               <div>
-                                  <p @click="childShow($event)">{{items.occupationalClass}}<van-icon name="arrow" style="float:right;"/></p>
+                                  <p @click="childShow($event)">{{items.secondClassCode}}<van-icon name="arrow" style="float:right;"/></p>
                                   <div class="showOccupationalName" v-show="false">
-                                      <p v-for="(content,index) in items.anLianThirdJobList" :key="index" @click="selectOccupationVal(content.occupationalCode,item.trade,items.occupationalClass,content.occupationalName)">{{content.occupationalName}}</p>
+                                      <!-- 注意！：threeClassName、threeClassCode 接口返反了，取值反着来！-->
+                                      <!-- content.classLevel：职业类别，如1类、2类 -->
+                                      <p v-for="(content,index) in items.thirdBaseClassList" :key="index" @click="selectOccupationVal(content.classLevel,content.threeClassName,item.classCode,items.secondClassCode,content.threeClassCode)">{{content.threeClassCode}}</p>
                                   </div>
                               </div>
                           </li>
@@ -253,6 +273,7 @@
                 inserdList:'',  //存放单个被保险人基本配置信息
                 insuredCertificateType:false,   //被保险人证件类型控件显示隐藏
                 insuredRelationship:false,  //与投保人关系控件显示隐藏
+                insuredSchoolType:false,  //被保险人学校类别控件显示隐藏
                 isSocialSecurity:true, //是否有社保
                 //投保人区域
                 holderBirth:"",   //投保人性别
@@ -275,14 +296,15 @@
                 maxPolicyDate:1, //最大起保投保日期为当前时间的几天后。 默认为1，如果后台没有配置不会报错
                 showOccupation: false, //职业分类是否显示
                 OccupationData: "", //安联职业全部JSON数据
-                OccupationVal: "", //职业分类value
-                cityListCode: "", //选择最后一个职业列表之后获取的 occupationalCode
+                OccupationVal: "", // 职业分类value
+                // cityListCode: "", //选择最后一个职业列表之后获取的 occupationalCode
                 isSocialSecurityVal:'', //被保险人有无社保val值
                 isSocialSecurityName:'', //被保险人有无社保name属性
                 anLianJobList:'',  //安联职业全部JSON数据
                 city1:'',  //一级职业下面的所有数据
                 city2:'',  //二级职业下面的所有数据
                 cityListCode:'', //选择最后一个职业列表之后获取的 occupationalCode
+                occupationType:'', // 职业类别：如1类、2类
                 showBank: false, //开户银行类型显示隐藏
                 bankValue:'',  //开户银行类型选择value值
                 bankList:[  //开户银行数据类型
@@ -415,7 +437,7 @@
              // 获取大家保职业数据
             var args1 = this.sign({brandId:this.brandId,catId:this.catId,typeId:this.typeId,templateName:"职业分类库"});
             api.getOccupationList(args1).then(res => {
-                this_.OccupationData = res.anLianJobList;
+                this_.OccupationData = res.data;
             });
 
             // 获取安联省市区信息
@@ -476,11 +498,13 @@
             },
             // 职业分类三级选择获取内容和code
             selectOccupationVal(
+                type,
                 code,
                 OccupationValOne,
                 OccupationValTow,
                 OccupationValThree
             ) {
+                this.occupationType = type;
                 this.OccupationVal = 
                   OccupationValOne + " " + OccupationValTow + " " + OccupationValThree;
                 this.cityListCode = code;
@@ -520,6 +544,10 @@
             // 被保险人有无社保显示隐藏
             showSelect_isSocialSecurity(index){
                 this.isSocialSecurity = !this.isSocialSecurity;
+            },
+            // 被保险人学校类别显示隐藏
+            showSelect_SchoolType(){
+                this.insuredSchoolType = !this.insuredSchoolType;
             },
             // 被保险人有无社保选择回调
             holderSelect_isSocialSecurity(item){
@@ -562,12 +590,18 @@
                     // $('#insuredBirth0').val('');
                 }
             },
+            // 被保险人学校类别选择回调
+            inserdSelect_SchoolType(item) {
+                this.insuredSchoolType = !this.insuredSchoolType;
+                $('#insuredSchoolType').val(item.name);
+            },
             changePrice(){
                 // 价格 * 人数 * 份数
                 this.totalPrice = this.accMul(Number(this.onePrice),Number(this.totalVal),Number(this.inserdNum));
             },
             //调用核保接口
             onCheckPolicy(){
+                console.log(222);
                 var data={
                     time: $('#time').val(),
                     memberId: this.getCookie('ZB_JUSER_Mid'),
@@ -602,42 +636,44 @@
                 })
                 // 获取所有被保险人填写信息
                 var inserdList = {};
+               
                 $.each(this_.inserdList,function(index,ele){
-                    if(ele.colcode=="insuredSex"){
+                   if(ele.colcode=="insuredSex"){
                         var radioContent = $('.inserdPolicy').find($('div[name='+ ele.colcode +']')).find('input[name="sex"]:checked').val();
                         inserdList[ele.colcode] = radioContent;
                     }else if(ele.colcode=="insuredCertificateType"){
                         inserdList[ele.colcode] = $('.inserdPolicy').find($('input[name='+ ele.colcode +']')).val();
                     }else if(ele.colcode=="workTypeName"){
-                        var profession1 = $('#profession1').val() == '请选择' ? '' : $('#profession1').val();
-                        var profession2 = $('#profession2').val() == '请选择' ? '' : $('#profession2').val();
-                        var profession3 = $('#profession3').val() == '请选择' ? '' : $('#profession3').val();
-                        inserdList[ele.colcode] = profession1 + ' ' + profession2 + ' ' + profession3;
+
+                        // inserdList[ele.colcode] = that.OccupationVal;
+                        // inserdList["work_type_code"] = that.cityListCode;
+
+                        inserdList[ele.colcode] = this_.occupationType;
                         inserdList['work_type_code'] = this_.cityListCode;
+
                     }else{
-                        if(ele.colcode != undefined){
+                        if(ele.colcode != undefined ){ // 遍历被保险人信息字段
                             inserdList[ele.colcode] = $('.inserdPolicy').find($('input[name='+ ele.colcode +']')).val();
                         }
                     }
                 })
 
                 // 获取所有其他信息 放到other对象中
-                var otherList = {};
-                $.each(this_.otherList,function(index,ele){
-                    if(this_.isSocialSecurity == false){
-                        if(ele.colcode!="AccountNo" && ele.colcode!="AccountBankName" && ele.colcode!="AccountName"){
-                            otherList[ele.colcode] = $('.inserdPolicy').find($('input[name='+ ele.colcode +']')).val();
-                        }
-                    }else{
-                        otherList[ele.colcode] = $('.inserdPolicy').find($('input[name='+ ele.colcode +']')).val();
-                    }
-                })
-                inserdList.subjectJson = otherList;
+                // var otherList = {};
+                // $.each(this_.otherList,function(index,ele){
+                //     if(this_.isSocialSecurity == false){
+                //         if(ele.colcode!="AccountNo" && ele.colcode!="AccountBankName" && ele.colcode!="AccountName"){
+                //             otherList[ele.colcode] = $('.inserdPolicy').find($('input[name='+ ele.colcode +']')).val();
+                //         }
+                //     }else{
+                //         otherList[ele.colcode] = $('.inserdPolicy').find($('input[name='+ ele.colcode +']')).val();
+                //     }
+                // })
+                // inserdList.subjectJson = otherList;
                 inserdAllList.push(inserdList);
                 data.holder=holder;
                 data.inserd=inserdAllList;
                 console.log(data)
-
 
                 //==================================================  校验户填写信息  =================================================
 
@@ -691,19 +727,21 @@
                             Toast('请选择有无社保');
                             Status = false;
                             // 标的信息判断
-                        }else if(this_.isSocialSecurity){
-                            if(data.inserd[i].subjectJson.AccountNo == ''){
-                                Toast('请输入银行账户');
-                                Status = false;
-                            }else if(data.inserd[i].subjectJson.AccountBankName == ''){
-                                Toast('请选择开户银行');
-                                Status = false;
-                            }else if(data.inserd[i].subjectJson.AccountName == ''){
-                                Toast('请输入持卡人姓名');
-                                Status = false;
-                            }
+                        // }else if(this_.isSocialSecurity){
+                        //     if(data.inserd[i].subjectJson.AccountNo == ''){
+                        //         Toast('请输入银行账户');
+                        //         Status = false;
+                        //     }else if(data.inserd[i].subjectJson.AccountBankName == ''){
+                        //         Toast('请选择开户银行');
+                        //         Status = false;
+                        //     }else if(data.inserd[i].subjectJson.AccountName == ''){
+                        //         Toast('请输入持卡人姓名');
+                        //         Status = false;
+                        //     }
                         }
                     }
+
+                    // return false;
 
                     if(Status == true){
                         var args=this_.sign(data);

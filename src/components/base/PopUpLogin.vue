@@ -8,7 +8,7 @@
       <van-tabs v-model="activeName" color="#ffffff00" title-active-color="#F99A31">
         <van-tab title="密码登录" name="0">
           <div class="phoneIcon">
-            <van-field placeholder="请输入手机号码" v-model="disabledVal" :left-icon="phone" clearable />
+            <van-field placeholder="请输入手机号码" v-model="phoneCode" :left-icon="phone" clearable />
           </div>
           <div class="phoneIcon">
             <van-field
@@ -27,7 +27,7 @@
         </van-tab>
         <van-tab title="短信登录" name="1">
           <div class="phoneIcon">
-            <van-field placeholder="请输入手机号码" v-model="disabledVal" :left-icon="phone" clearable />
+            <van-field placeholder="请输入手机号码" v-model="phoneCode" :left-icon="phone" clearable />
           </div>
           <div class="phoneIcon">
             <van-field
@@ -73,7 +73,7 @@ export default {
       mimaicon: require("@/assets/images/login/mimaicon.png"),
       phone: require("@/assets/images/login/mobile.png"),
       yzmicon: require("@/assets/images/login/yzmicon.png"),
-      disabledVal: "", // 手机号码
+      phoneCode: "", // 手机号码
       passWordtext: "", // 密码
       verificationCode: "", //验证码
       sendAuthCode: false, //是否可以获取验证码
@@ -104,15 +104,15 @@ export default {
   methods: {
     //   密码登录
     pwdLogin() {
-      if (this.disabledVal == "") {
+      if (this.phoneCode == "") {
         this.Toast.fail("请输入手机号码");
-      } else if (!this.Utils.isPhoneNumber(this.disabledVal)) {
+      } else if (!this.Utils.isPhoneNumber(this.phoneCode)) {
         this.Toast.fail("请输入正确的手机号码");
       } else if (this.passWordtext == "") {
         this.Toast.fail("请输入密码");
       } else {
         var args = this.sign({
-          userPhone: this.disabledVal,
+          userPhone: this.phoneCode,
           userPassword: md5(this.passWordtext),
           openId: this.getCookie("wxopenId")
         });
@@ -122,7 +122,7 @@ export default {
             this.Toast.fail(res.message);
           } else if (res.code == "20000") {
             this.Toast.success(res.message);
-            this.setCookie("openId", res.data.openId, "7");
+            this.setCookie("openId", res.data.openId, 30);
             // 登录成功回调
             if (this.LoginSuccess) {
               this.LoginSuccess();
@@ -133,14 +133,14 @@ export default {
     },
     // 获取验证码
     getCode() {
-      if (this.disabledVal == "") {
+      if (this.phoneCode == "") {
         this.Toast.fail("请输入手机号码");
-      } else if (!this.Utils.isPhoneNumber(this.disabledVal)) {
+      } else if (!this.Utils.isPhoneNumber(this.phoneCode)) {
         this.Toast.fail("请输入正确的手机号码");
       } else {
         // 判断是否注册
         var params = this.sign({
-          userPhone: this.disabledVal,
+          userPhone: this.phoneCode,
           userPassword: "",
           openId: this.getCookie("wxopenId")
         });
@@ -162,7 +162,7 @@ export default {
 
             //获取短信验证码
             var args = this.sign({
-              userPhone: this.disabledVal,
+              userPhone: this.phoneCode,
               btype: 3
             });
             api.getphoneCode(args).then(res => {
@@ -179,15 +179,15 @@ export default {
     },
     //   验证码登录
     verificationCodeLogin() {
-      if (this.disabledVal == "") {
+      if (this.phoneCode == "") {
         this.Toast.fail("请输入手机号码");
-      } else if (!this.Utils.isPhoneNumber(this.disabledVal)) {
+      } else if (!this.Utils.isPhoneNumber(this.phoneCode)) {
         this.Toast.fail("请输入正确的手机号码");
       } else if (this.verificationCode == "") {
         this.Toast.fail("请输入验证码");
       } else {
         var args = this.sign({
-          userPhone: this.disabledVal, // 手机号码
+          userPhone: this.phoneCode, // 手机号码
           messageCode: this.verificationCode, // 短信验证码
           uuid: this.uuids // 识别码
         });
@@ -195,7 +195,7 @@ export default {
           console.log(res);
           if (res.code == "20000") {
             this.Toast.success("登录成功!");
-            this.setCookie("openId", res.data.openId, "7");
+            this.setCookie("openId", res.data.openId, 30);
             // 登录成功回调
             if (this.LoginSuccess) {
               this.LoginSuccess();
@@ -208,15 +208,15 @@ export default {
     },
     // 忘记密码
     forgetPassword() {
-      if (this.disabledVal == "") {
+      if (this.phoneCode == "") {
         this.Toast.fail("请输入手机号码");
-      } else if (!this.Utils.isPhoneNumber(this.disabledVal)) {
+      } else if (!this.Utils.isPhoneNumber(this.phoneCode)) {
         this.Toast.fail("请输入正确的手机号码");
       } else {
         this.$router.push({
           path: "forgetWord",
           query: {
-            phone: this.disabledVal,
+            phone: this.phoneCode,
             routerLink: this.forgetPasswordParams.routerLink,
             routerQuery: JSON.stringify(this.forgetPasswordParams.routerQuery)
           }

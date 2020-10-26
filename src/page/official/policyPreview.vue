@@ -105,7 +105,7 @@
             <a
               v-for="(item , index) in newClauseList"
               href="javascript:void(0)"
-              @click="ProviewImg(link + item.termFilePath)"
+              @click="$showPDF(link + item.termFilePath)"
               :key="index"
             >《{{item.termName}}》</a>
           </div>
@@ -127,19 +127,27 @@
           <van-tabbar-item
             v-else
             class="gobuy"
-            @click="goodName == '平安驾乘意外伤害保险' ? paymentPopup() : onPolicyPay()"
+            @click="goodName == '平安驾乘意外伤害保险' || '个人综合意外保障' ? paymentPopup() : onPolicyPay()"
           >确认支付</van-tabbar-item>
           <div class="cover"></div>
         </van-tabbar>
       </div>
     </div>
     <!-- 平安驾乘支付弹框 -->
-    <JiaChengPay
+    <!-- <JiaChengPay
       :payShow="payShow"
       :policyFee="policyFee"
       @payShow="changePayShow($event)"
       :goodName="goodName"
-    ></JiaChengPay>
+    ></JiaChengPay> -->
+    <!-- 平台非见费支付弹框 -->
+    <paymentPopPay
+      :payShow="payShow"
+      :orderNo="orderNo"
+      :policyFee="policyFee"
+      @payShow="changePayShow($event)"
+      :goodName="goodName"
+    ></paymentPopPay>
     <!-- 弹出遮罩层 -->
     <van-popup
       v-model="loadingShow"
@@ -162,7 +170,7 @@
       <div>
         <a v-for="(item , index) in AllClause"
           href="javascript:void(0)"
-          @click="ProviewImg(link + item.termFilePath)"
+          @click="$showPDF(link + item.termFilePath)"
           :key="index"
         >《{{item.termName}}》</a>
       </div>
@@ -208,22 +216,13 @@
       <p style="position: absolute;top: -34px;color: white;text-align: center;width: 100;left: 0;right: 0;">距离订单关闭还剩：{{OrderCountdown}}</p>
       <p style="padding:20px 30px;">务必请被保险人在6小时内完成确认，否则此订单将自动关闭！如果被保险人已完成确认，请点击“确定”按钮，去支付保费。</p>
     </van-dialog>
-    <!-- 图片条款弹出框 -->
-    <van-popup v-model="clauseShow" :style="{ width:'100%',height: '100%'}"  closeable close-icon="close">
-        <div :style="{ width:'100%',height: '100%',overflow:'scroll'}">
-        <van-image :src="clausePath" :style="{ width:'100%'}">
-            <template v-slot:loading>
-                <van-loading type="spinner" size="20" />
-            </template>
-        </van-image>
-        </div>
-    </van-popup>
   </div>
 </template>
 
 <script>
 import BeneficiaryPreview from "@/page/official/tianAn/BeneficiaryPreview";
-import JiaChengPay from "@/page/official/pingAn/JiaChengPay";
+// import JiaChengPay from "@/page/official/pingAn/JiaChengPay";
+import paymentPopPay from "@/page/official/paymentPopPay";
 import $ from "jquery";
 import api from "@/fetch/api";
 import {
@@ -234,7 +233,7 @@ import {
 } from "vuelidate/lib/validators";
 export default {
   name: "policyPreview",
-  components: { BeneficiaryPreview, JiaChengPay },
+  components: { BeneficiaryPreview, paymentPopPay }, // JiaChengPay
   data() {
     return {
       titleIcon1: require("@/assets/images/others/personal1.png"),
@@ -247,6 +246,7 @@ export default {
       weiXinIcon: require("@/assets/images/weiXin.jpg"),
       zhiFuBaoIcon: require("@/assets/images/zhiFuBao.jpg"),
       link: this.$store.state.JumpPath, //pdf打开地址
+      orderNo: "", // 订单号
       policyFee: "", // 价格
       holderList: "", //投保人信息
       inserdList: [], //被保险人信息  其他信息包含在被保险人信息里面
@@ -286,8 +286,6 @@ export default {
       countdownStarts: false, // 倒计时是否开始（投保人分享之后生成倒计时，如果已经生成再次分享直接展示）
       uuid:'', // 验证码id
       confirmStatus: '', // 被保人是否确认（1是，0否）
-      clauseShow: false, // 条款
-      clausePath: '', //条款地址
     };
   },
   mounted() {
@@ -302,8 +300,10 @@ export default {
     var args = this.sign({ id: Pid });
     // 获取投保预览信息
     api.appPreviewpolicy(args).then(res => {
+      console.log(res)
       this.goodInsuranceCompanyAlias = res.product.goodInsuranceCompanyAlias;
       this.configList = res;
+      this.orderNo = res.orderNo;
       this.policyFee = res.policyFee;
       this.holderList = res.holder;
       this.goodName = res.goodName;
@@ -628,7 +628,7 @@ export default {
             that.wxH5OldOrderPay(args);
           }else{
             api.gePolicyPay(args).then(response => {
-              //公共支付
+              // 公共支付
                 if (response.success) {
                   //老年人和平安驾乘意外伤害保险特殊处理（直接拉起微信支付）
                   if (that.goodInsuranceCompanyAlias == "天安财险") {
@@ -832,14 +832,9 @@ export default {
         if(this.confirmStatus){
           // 是否需要被保人确认 this.confirmStatus == 1 已经被确认了,修改IsNeedInsuredConfirm状态为 false
           this.IsNeedInsuredConfirm = false;
-          this.goodName == '平安驾乘意外伤害保险' ? this.paymentPopup() : this.onPolicyPay();
+          this.goodName == '平安驾乘意外伤害保险' || '个人综合意外保障' ? this.paymentPopup() : this.onPolicyPay();
         }
       })
-    },
-    // 图片条款预览
-    ProviewImg(imgPath) {
-      this.clauseShow = true; // 条款
-      this.clausePath = imgPath; //条款地址
     },
   }
 };

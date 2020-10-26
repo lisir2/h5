@@ -11,38 +11,38 @@ const Classlist = () => import('@/page/official/classlist');
 const Mine = () => import('@/page/official/mine');
 const Study = () => import('@/page/official/Study');
 const Productdetail = () => import('@/page/official/productdetail');
-const LoginRegister = () => import('@/page/official/loginRegister');
-const LoginMain = () => import('@/page/official/loginMain');
-const RegisterMain = () => import('@/page/official/registerMain');
-const RegisterSuccess = () => import('@/components/registerSuccess');
-const QuickLogin = () => import('@/components/quickLogin');
+const LoginRegister = () => import('@/components/loginPage/loginRegister');
+const LoginMain = () => import('@/components/loginPage/loginMain');
+const RegisterMain = () => import('@/components/loginPage/registerMain');
+const RegisterSuccess = () => import('@/components/loginPage/registerSuccess');
+const QuickLogin = () => import('@/components/loginPage/quickLogin');
 const ForgetWord = () => import('@/components/forgetWord');
-const ResetPassword = () => import('@/components/resetPassword');
-const ResetSuccess = () => import('@/components/resetSuccess');
+const ResetPassword = () => import('@/components/loginPage/resetPassword');
+const ResetSuccess = () => import('@/components/loginPage/resetSuccess');
 const BindUser = () => import('@/page/official/bindUser');
-const CommonProblem = () => import('@/components/commonProblem');
-const IntimateService = () => import('@/components/intimateService');
-const ArticleDetail = () => import('@/components/articleDetail');
-const ProductTerms = () => import('@/components/productTerms');
+const CommonProblem = () => import('@/components/productDetailComponent/commonProblem');
+const IntimateService = () => import('@/components/productDetailComponent/intimateService');
+const ArticleDetail = () => import('@/components/productDetailComponent/articleDetail');
+const ProductTerms = () => import('@/components/productDetailComponent/productTerms');
 const PaySuccess = () => import('@/components/paySuccess');
-const HealthInform = () => import('@/components/healthInform');
+const HealthInform = () => import('@/components/productDetailComponent/healthInform');
 const MyEvaluation = () => import('@/components/myEvaluation');
-const PersonalData = () => import('@/components/personalData');
-const PersonalPolicy = () => import('@/components/personalPolicy');
-const VehiclePolicy = () => import('@/components/vehiclePolicy');
-const IndustryPolicy = () => import('@/components/industryPolicy');
-const PolicyInquiry = () => import('@/components/policyInquiry');
-const ActivityZone = () => import('@/components/activityZone');
-const PersonalDetail = () => import('@/components/personalDetail');
-const MyAssets = () => import('@/components/myAssets');
-const BankInformation = () => import('@/components/bankInformation');
-const SetUp = () => import('@/components/setUp');
+const PersonalData = () => import('@/components/mine/personalData/personalData');
+const PersonalPolicy = () => import('@/components/mine/personalPolicy');
+const VehiclePolicy = () => import('@/components/mine/vehiclePolicy');
+const IndustryPolicy = () => import('@/components/mine/industryPolicy');
+const PolicyInquiry = () => import('@/components/home/policyInquiry');
+const ActivityZone = () => import('@/components/mine/activityZone');
+const PersonalDetail = () => import('@/components/mine/personalDetail');
+const MyAssets = () => import('@/components/mine/MyAssets/myAssets');
+const BankInformation = () => import('@/components/mine/MyAssets/bankInformation');
+const SetUp = () => import('@/components/mine/setUp');
 const policyPreview = () => import('@/page/official/policyPreview');
 const insuranceHuaAn = () => import('@/page/official/huaAn/insuranceHuaAn');
-const TopContacts = () => import('@/components/topContacts');
-const AddContacts = () => import('@/components/addContacts');
-const IndexArticle = () => import('@/components/indexArticle');
-const CommentList = () => import('@/components/CommentList');
+const TopContacts = () => import('@/components/mine/topContacts');
+const AddContacts = () => import('@/components/mine/addContacts');
+const IndexArticle = () => import('@/components/home/indexArticle');
+const CommentList = () => import('@/components/productDetailComponent/CommentList');
 const ProfessionalQualifications = () => import('@/components/ProfessionalQualifications');
 const insurancePingAn = () => import('@/page/official/pingAn/insurancePingAn');
 const insuranceZiJin = () => import('@/page/official/ziJin/insuranceZiJin');
@@ -62,32 +62,31 @@ const insuranceZhongAn = () => import('@/page/official/zhongAn/insuranceZhongAn'
 const insuranceTianAn = () => import('@/page/official/tianAn/insuranceTianAn');
 const healthInformZhongAn = () => import('@/page/official/zhongAn/healthInformZhongAn');
 const insuranceDDB = () => import('@/page/official/heZhong/insuranceDDB');
-const ClaimsService = () => import('@/components/ClaimsService');
+const ClaimsService = () => import('@/components/mine/ClaimsService');
 const chat = () => import('@/page/official/chat');
-const serviceCenter = () => import('@/components/serviceCenter');
+const serviceCenter = () => import('@/components/mine/serviceCenter');
 const companyIntroduction = () => import('@/components/companyIntroduction');
-const record = () => import('@/components/record');
-const CustomizedInsurance = () => import('@/components/CustomizedInsurance');
-const InsuranceSale = () => import('@/components/InsuranceSale');
-const Customize = () => import('@/components/Customize');
-const CustomizeMessage = () => import('@/components/CustomizeMessage');
+const CustomizedInsurance = () => import('@/components/home/CustomizedInsurance');
+const InsuranceSale = () => import('@/components/home/InsuranceSale');
+const Customize = () => import('@/components/home/Customize');
+const CustomizeMessage = () => import('@/components/home/CustomizeMessage');
 const QualificationLicence = () => import('@/components/QualificationLicence');
 const contactUs = () => import('@/components/contactUs');
-const editContacts = () => import('@/components/editContacts');
-const billingDetails = () => import('@/components//billingDetails');
-const DetailedInstructions = () => import('@/components/DetailedInstructions');
-const alterName = () => import('@/components/alterName');
-const PersonalTailor = () => import('@/components/PersonalTailor');
-const WithdrawalInformation = () => import('@/components/WithdrawalInformation');
+const editContacts = () => import('@/components/mine/editContacts');
+const billingDetails = () => import('@/components/mine/MyAssets/billingDetails');
+const DetailedInstructions = () => import('@/components/mine/MyAssets/DetailedInstructions');
+const alterName = () => import('@/components/mine/personalData/alterName');
+const PersonalTailor = () => import('@/components/home/PersonalTailor');
+const WithdrawalInformation = () => import('@/components/mine/MyAssets/WithdrawalInformation');
 const paymentFailure = () => import('@/page/official/paymentFailure');
 const identityAuthentication = () => import('@/page/official/identityAuthentication');
-const cashOut = () => import('@/components/cashOut');//提现
+const cashOut = () => import('@/components/mine/MyAssets/cashOut');//提现
 const IndustryClass = () => import('@/page/official/IndustryClass');//行业保险
 const IndustryList = () => import('@/page/official/IndustryList');//行业列表
 const zhonganAppSuccess = () => import('@/page/official/zhongAn/zhonganAppSuccess');
 const notFound = () => import('@/page/official/notFound');
 const zhongAnFamilyProview = () => import('@/page/official/zhongAn/zhongAnFamilyProview');//众安预览页面
-const historyPolicy = () => import('@/components/historyPolicy');//历史保单
+const historyPolicy = () => import('@/components/mine/historyPolicy');//历史保单
 const carHistoryPolicy = () => import('@/components/historyPolicy/carHistoryPolicy');//车险历史保单
 const industryHistoryPolicy = () => import('@/components/historyPolicy/industryHistoryPolicy');//行业险历史保单
 const personalHistoryPolicy = () => import('@/components/historyPolicy/personalHistoryPolicy');//个险历史保单
@@ -103,8 +102,8 @@ const BeneficiaryPreview = () => import('@/page/official/tianAn/BeneficiaryPrevi
 const TianAnPayState = () => import('@/page/official/pingAn/TianAnPayState');//保单预览页面---受益人预览基础组件
 const FreeInsurance = () => import('@/page/official/activity/FreeInsurance');//免费领取保险组件
 const GetSuccess = () => import('@/components/GetSuccess');//免费领取保险组件
-const WithdrawalInstructions = () => import('@/components/WithdrawalInstructions');//提现说明
-const withdrawDepositResule = () => import('@/components/withdrawDepositResule');//提现结果
+const WithdrawalInstructions = () => import('@/components/mine/MyAssets/WithdrawalInstructions');//提现说明
+const withdrawDepositResule = () => import('@/components/mine/MyAssets/withdrawDepositResule');//提现结果
 const Provinces = () => import('@/page/official/heZhong/Provinces');//省市区库
 const Profession = () => import('@/page/official/heZhong/Profession');//职业分类库
 const bankList = () => import('@/page/official/heZhong/bankList');//职业分类库
@@ -310,12 +309,6 @@ let routes = [
     path: '/policyInquiry',
     name: 'policyInquiry',
     component: PolicyInquiry
-  },
-  // 保单管理记录
-  {
-    path: '/record',
-    name: 'record',
-    component: record
   },
   //活动专区
   {
@@ -740,16 +733,30 @@ let routes = [
     name: 'DDBPreview',
     component: resolve => require(['@/page/official/heZhong/DDBPreview'], resolve),
   },
-  {
-    path: '/bankList',
-    name: 'bankList',
-    component: bankList,
-  },
+  // 我的名片
   {
     path: '/myCard',
     name: 'myCard',
-    component: resolve => require(['@/components/myCard'], resolve)
-  }
+    component: resolve => require(['@/components/agent/myCard'], resolve)
+  },
+  // 绑定手机号
+  {
+    path: '/BindingPhone',
+    name: 'BindingPhone',
+    component: resolve => require(['@/components/authorizationBindingWX/BindingPhone'], resolve)
+  },
+  // 绑定已有账号
+  {
+    path: '/BindingAccount',
+    name: 'BindingAccount',
+    component: resolve => require(['@/components/authorizationBindingWX/BindingAccount'], resolve)
+  },
+  // 设置密码
+  {
+    path: '/SetLoginPassword',
+    name: 'SetLoginPassword',
+    component: resolve => require(['@/components/authorizationBindingWX/SetLoginPassword'], resolve)
+  },
   // {
   // 	path: '*', 
   //   component: Home
@@ -772,5 +779,4 @@ const router = new Router({
     }
   }
 })
-
 export default router

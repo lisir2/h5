@@ -233,11 +233,11 @@
 
 <script>
 import area from "../../../../static/js/area";
-import api from "../../../fetch/api";
+import api from "@/fetch/api";
 import $ from "jquery";
-import { isIdCard, isPhoneNumber, isEmail } from "../../../util/validate";
+import { isIdCard, isPhoneNumber, isEmail } from "@/util/validate";
 // 弹出常用联系人
-import popupContacts from '../../../components/popupContacts';
+import popupContacts from '@/components/popupContacts';
 export default {
   name: "insuranceHuaAn",
   components: {
@@ -245,12 +245,12 @@ export default {
   },
   data() {
     return {
-      titleIcon1: require("../../../assets/images/others/personal1.png"),
-      titleIcon2: require("../../../assets/images/others/personal2.png"),
-      titleIcon3: require("../../../assets/images/others/personal3.png"),
-      titleIcon4: require("../../../assets/images/others/personal4.png"),
-      titleIcon5: require("../../../assets/images/others/personal5.png"),
-      titleIcon6: require("../../../assets/images/others/personal6.png"),
+      titleIcon1: require("@/assets/images/others/personal1.png"),
+      titleIcon2: require("@/assets/images/others/personal2.png"),
+      titleIcon3: require("@/assets/images/others/personal3.png"),
+      titleIcon4: require("@/assets/images/others/personal4.png"),
+      titleIcon5: require("@/assets/images/others/personal5.png"),
+      titleIcon6: require("@/assets/images/others/personal6.png"),
       showPage: true,
       loadingShow: false, //加载动画是否显示
       //三级联动

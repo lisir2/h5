@@ -219,7 +219,7 @@
             <a
               v-for="(item , index) in newClauseList"
               href="javascript:void(0)"
-              @click="ProviewImg(link + item.termFilePath)"
+              @click="$showPDF(link + item.termFilePath)"
               :key="index"
             >《{{item.termName}}》</a>
           </div>
@@ -249,16 +249,6 @@
     >
       <!-- 加载动画 -->
       <van-loading size="24px" vertical color="#1989fa">数据加载中...</van-loading>
-    </van-popup>
-    <!-- 图片条款弹出框 -->
-    <van-popup v-model="clauseShow" :style="{ width:'100%',height: '100%'}"  closeable close-icon="close">
-        <div :style="{ width:'100%',height: '100%',overflow:'scroll'}">
-        <van-image :src="clausePath" :style="{ width:'100%'}">
-            <template v-slot:loading>
-                <van-loading type="spinner" size="20" />
-            </template>
-        </van-image>
-        </div>
     </van-popup>
   </div>
 </template>
@@ -304,8 +294,6 @@ export default {
       brandId: "",  // 品牌id
       catId: "",  // 分类id
       typeId: "", // 类型id
-      clauseShow: false, // 条款
-      clausePath: '', //条款地址
     };
   },
   mounted() {
@@ -344,14 +332,13 @@ export default {
         );
       });
       
-
       // 可回溯 在生成订单加载的时候 执行
       var infor = {};
-      infor.productVersion = "testversion"; //销售产品版本
-      infor.orderSysSource = "1"; //来源
-      infor.orderCode = res.orderNo; //此处传递对应的订单号
-      _postParams(infor);
-      console.log("可回溯 在生成订单加载的时候 执行传入订单号");
+      infor.productVersion = '1.0'; //销售产品版本
+      infor.orderSysSource = this.$store.state.orderSysSource; //来源
+      infor.orderCode = res.orderPolicy.orderNo; //此处传递对应的订单号
+      _setOrder(infor);
+      // 可回溯 在生成订单加载的时候 执行
     });
 
     var params = this.sign({ planId: this.planId });
@@ -403,11 +390,6 @@ export default {
     },
     onClickLeft() {
       this.$router.go(-1);
-    },
-    // pdf在线预览
-    ProviewImg(url) {
-      this.clauseShow = true; // 条款
-      this.clausePath = url; //条款地址
     },
     // 公用支付
     onPolicyPay() {

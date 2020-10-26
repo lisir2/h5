@@ -156,7 +156,7 @@
     <div class="heartserve">
       <ul>
         <li v-for="item in prodIntimateServiceList" :key="item.id">
-          <van-cell :title="item.serviceTitleName" :to='{path: "/intimateService",query: { goodId: goodId }}' icon="checked" />
+          <van-cell :title="item.serviceTitleName" :to="{path: '/intimateService',query: {goodId: goodId}}" icon="checked" />
         </li>
       </ul>
     </div>
@@ -288,15 +288,15 @@ export default {
       prodPlanList_second: "", //规格值
       planEnsureDetailList: "",
       prodIntimateServiceList: "",
-      specificationShow: false, // 规格弹出框 
-      priceResult: "",  // 价格
+      specificationShow: false, // 规格弹出框
+      priceResult: "", // 价格
       goodId: this.getQueryString("productId"), //产品id
       planId: "",
-      brandId: "",  // 品牌id
-      catId: "",  // 分类id
-      typeId: "",  // 类型id
+      brandId: "", // 品牌id
+      catId: "", // 分类id
+      typeId: "", // 类型id
       listLength: true,
-      productPresentation: "",  // 产品介绍
+      productPresentation: "", // 产品介绍
       questionList: "", // 干货科普
       goodInsuranceCompanyAlias: "", //保险公司
       goodName: "", //产品名称
@@ -348,11 +348,13 @@ export default {
           shareMid: this.getQueryString("shareMid")
         }
       },
-      DDB_Save_Specification_id:'', // 多多宝保存规格id，投保页面使用
-      activitySpecifications:[], // 当前选中的规格
+      DDB_Save_Specification_id: "", // 多多宝保存规格id，投保页面使用
+      activitySpecifications: [] // 当前选中的规格
     };
   },
-  created() {},
+  created() {
+    
+  },
   mounted() {
     var that = this;
     // 0 ：上架   1：下架   2：备案中
@@ -363,9 +365,9 @@ export default {
     this.goodName = this.$store.state.productDetail.data.prodGoods.goodName; //产品名称
     this.commissionInfo = this.$store.state.productDetail.data.prodGoods.goodsCommissionRateDetailList; //佣金信息
     this.commissionRatio = this.$store.state.productDetail.data.prodGoods.commissionRatio; // 默认展示一级佣金和一级限时佣金
-    this.brandId = this.$store.state.productDetail.data.prodGoods.brandId // 用于职业分类brandId,catId,typeId
-    this.catId = this.$store.state.productDetail.data.prodGoods.catId
-    this.typeId = this.$store.state.productDetail.data.prodGoods.typeId
+    this.brandId = this.$store.state.productDetail.data.prodGoods.brandId; // 用于职业分类brandId,catId,typeId
+    this.catId = this.$store.state.productDetail.data.prodGoods.catId;
+    this.typeId = this.$store.state.productDetail.data.prodGoods.typeId;
 
     try {
       // 判断当前用户是否是代理人
@@ -441,9 +443,13 @@ export default {
       this.planId = id;
       this.activity = index;
       // 规格信息 过滤掉不需要展示的
-      this.prodPlanList_second = this.prodPlanList[index].planAttrKeyList.filter(element=>element.isDisplay == 0);
+      this.prodPlanList_second = this.prodPlanList[
+        index
+      ].planAttrKeyList.filter(element => element.isDisplay == 0);
       // 规格默认选中第1个，填充0
-      this.activitySpecifications = new Array(this.prodPlanList_second.length).fill(0);
+      this.activitySpecifications = new Array(
+        this.prodPlanList_second.length
+      ).fill(0);
       //判断是否有规格
       if (this.prodPlanList[0].planSkuList.length != 0) {
         //默认规格值列表 attrValSymbol: 默认规格id字符串
@@ -500,12 +506,12 @@ export default {
     // 选择规格，进行价格试算 i:为外层规格模块（比如 保障期限，购买份数） j:为内层小规格值（比如 被保险人年龄 18,19,20）
     tap(i, j) {
       // 点击规格传入i、j 切换规格，在进行价格试算
-      if(i != undefined & j != undefined){
+      if ((i != undefined) & (j != undefined)) {
         this.activitySpecifications[i] = j;
         // 强制刷新dom，当修改data状态里面的对象或数组的属性时，不会触发dom渲染
         this.$forceUpdate();
       }
-      
+
       // 获取规格id，进行价格试算
       this.$nextTick(function() {
         var keyStr = "";
@@ -599,20 +605,6 @@ export default {
     // 判断健康告知，跳转路由函数 healthInform:是否跳转健康告知,path:健康告知的路由,Router:从健康告知要跳转的路由,goodName:产品名称
     isRouter(healthInform, path, Router, goodName, id) {
       var that = this;
-      var keyStr = "";
-      $.each($(".on"), function(index, ele) {
-        keyStr += $(ele).attr("name") + ",";
-      });
-      var keyStr = keyStr.substring(0, keyStr.length - 1);
-      var args = this.sign({
-        productId: this.goodId,
-        planId: $(".planBtn").attr("name"),
-        value: keyStr
-      });
-      // 价格试算
-      api.getCalculation(args).then(res => {
-        this.priceResult = res.data;
-      });
       // 获取保障期限
       var safeDate = $('div[name="保障期限"]')
         .find($(".quotaList"))
@@ -648,8 +640,8 @@ export default {
           priceResult: this.priceResult,
           safeDate: safeDate,
           brandId: this.brandId, // 品牌编号
-          catId: this.catId,  // 分类id
-          typeId: this.typeId, // 类型id 
+          catId: this.catId, // 分类id
+          typeId: this.typeId, // 类型id
           isSocialSecurity: isSocialSecurity,
           activityCode: this.activityCode,
           invitationCode: this.invitationCode,
@@ -674,7 +666,6 @@ export default {
             query: params
           });
         } else {
-          console.log(Router,params)
           this.$router.push({
             path: Router,
             query: params
@@ -685,71 +676,96 @@ export default {
     // 立即投保 id: 产品详情页面选择规格保存数据库(多多宝)，返回id（投保页面进行查询展示）
     goBuy(id) {
       // 多多宝选择规格保存id
-      if(id){
+      if (id) {
         this.DDB_Save_Specification_id = id;
-      };
-      
+      }
+
       var loginStatus = this.getCookie("ZB_JUSER_Mid");
       //判断登录状态 或 有渠道邀请码的话 ，可直接投保
       if (loginStatus || this.activityCode != "") {
-          //是否有健康告知 2:无 0:总体 1:逐一
-          var isHealthAssort = this.$store.state.healthAssort == 0 || this.$store.state.healthAssort == 1;
-          console.log('健康告知状态：' + isHealthAssort);
-          
-          if (this.goodInsuranceCompanyAlias == "华安保险") {
-            this.isRouter(isHealthAssort, "/healthInform", "/insuranceHuaAn");
-          } else if (this.goodInsuranceCompanyAlias == "中国平安") {
-            //平安财险
-            if (this.goodName == "浙江省汽车维修企业员工团体意外伤害保险") {
-              this.isRouter(isHealthAssort, "/healthInform", "/insurancePingAnQiXiu", "浙江省汽车维修企业员工团体意外伤害保险");
-            } else if (
-              this.goodName == "平安驾驶人考试不通过补考费用损失保险"
-            ) {
-              this.isRouter(isHealthAssort, "/healthInform", "/insurancePingAnKaoShi");
-            } else if (this.goodName == "环晟-平安家政服务综合保险") {
-              this.isRouter(isHealthAssort, "/healthInform", "/insuranceJiaZheng");
-            } else if (this.goodName == "平安驾乘意外伤害保险") {
-              this.isRouter(isHealthAssort, "/healthInform", "/insuranceJiaCheng");
-            } else {
-              this.isRouter(isHealthAssort, "/healthInform", "/insurancePingAn");
-            }
-          } else if (this.goodInsuranceCompanyAlias == "紫金保险") {
-            //紫金保险
-            this.isRouter(isHealthAssort, "/healthInform", "/insuranceZiJin");
-          } else if (this.goodInsuranceCompanyAlias == "京东安联财险") {
-            this.isRouter(isHealthAssort, "/healthInform", "/insuranceAnlian");
-          } else if (this.goodInsuranceCompanyAlias == "人保财险") {
-            this.isRouter(isHealthAssort, "/healthInform", "/insuranceRenBao");
-          } else if (this.goodInsuranceCompanyAlias == "安心保险") {
-            this.isRouter(isHealthAssort, "/healthInform", "/insuranceAnXin");
-          } else if (this.goodInsuranceCompanyAlias == "利宝保险") {
-            this.isRouter(isHealthAssort, "/healthInform", "/insuranceLiBao");
-          } else if (this.goodInsuranceCompanyAlias == "众安保险") {
-            this.isRouter(isHealthAssort, "/healthInform", "/insuranceZhongAn");
-          } else if (this.goodInsuranceCompanyAlias == "天安财险") {
-            this.isRouter(isHealthAssort, "/healthInform", "/insuranceTianAn");
-          } else if (this.goodInsuranceCompanyAlias == "大家保险") {
-            this.isRouter(isHealthAssort, "/healthInform", "/insuranceDaJiaBao");
-          } else if (this.goodInsuranceCompanyAlias == "合众人寿") {
+        //是否有健康告知 2:无 0:总体 1:逐一
+        var isHealthAssort =
+          this.$store.state.healthAssort == 0 ||
+          this.$store.state.healthAssort == 1;
+        console.log("健康告知状态：" + isHealthAssort);
+
+        if (this.goodInsuranceCompanyAlias == "华安保险") {
+          this.isRouter(isHealthAssort, "/healthInform", "/insuranceHuaAn");
+        } else if (this.goodInsuranceCompanyAlias == "中国平安") {
+          //平安财险
+          if (this.goodName == "浙江省汽车维修企业员工团体意外伤害保险") {
             this.isRouter(
               isHealthAssort,
               "/healthInform",
-              "/insuranceDDB",
-              this.goodName,
-              this.DDB_Save_Specification_id
+              "/insurancePingAnQiXiu",
+              "浙江省汽车维修企业员工团体意外伤害保险"
             );
-          } else if (this.goodInsuranceCompanyAlias == "国寿财险") {
-            this.isRouter(isHealthAssort, "/healthInform", "/insuranceRenShou");
+          } else if (this.goodName == "平安驾驶人考试不通过补考费用损失保险") {
+            this.isRouter(
+              isHealthAssort,
+              "/healthInform",
+              "/insurancePingAnKaoShi"
+            );
+          } else if (this.goodName == "环晟-平安家政服务综合保险") {
+            this.isRouter(
+              isHealthAssort,
+              "/healthInform",
+              "/insuranceJiaZheng"
+            );
+          } else if (this.goodName == "平安驾乘意外伤害保险") {
+            this.isRouter(
+              isHealthAssort,
+              "/healthInform",
+              "/insuranceJiaCheng"
+            );
           } else {
             this.isRouter(isHealthAssort, "/healthInform", "/insurancePingAn");
           }
+        } else if (this.goodInsuranceCompanyAlias == "紫金保险") {
+          //紫金保险
+          this.isRouter(isHealthAssort, "/healthInform", "/insuranceZiJin");
+        } else if (this.goodInsuranceCompanyAlias == "京东安联财险") {
+          this.isRouter(isHealthAssort, "/healthInform", "/insuranceAnlian");
+        } else if (this.goodInsuranceCompanyAlias == "人保财险") {
+          this.isRouter(isHealthAssort, "/healthInform", "/insuranceRenBao");
+        } else if (this.goodInsuranceCompanyAlias == "安心保险") {
+          this.isRouter(isHealthAssort, "/healthInform", "/insuranceAnXin");
+        } else if (this.goodInsuranceCompanyAlias == "利宝保险") {
+          this.isRouter(isHealthAssort, "/healthInform", "/insuranceLiBao");
+        } else if (this.goodInsuranceCompanyAlias == "众安保险") {
+          this.isRouter(isHealthAssort, "/healthInform", "/insuranceZhongAn");
+        } else if (this.goodInsuranceCompanyAlias == "天安财险") {
+          this.isRouter(isHealthAssort, "/healthInform", "/insuranceTianAn");
+        } else if (this.goodInsuranceCompanyAlias == "大家保险") {
+          this.isRouter(isHealthAssort, "/healthInform", "/insuranceDaJiaBao");
+        } else if (this.goodInsuranceCompanyAlias == "合众人寿") {
+          this.isRouter(
+            isHealthAssort,
+            "/healthInform",
+            "/insuranceDDB",
+            this.goodName,
+            this.DDB_Save_Specification_id
+          );
+        } else if (this.goodInsuranceCompanyAlias == "国寿财险") {
+          this.isRouter(isHealthAssort, "/healthInform", "/insuranceRenShou");
+        } else {
+          this.isRouter(isHealthAssort, "/healthInform", "/insurancePingAn");
+        }
       } else {
-        this.PopUpLogin_show = true;
+        if (this.is_weixn()) {
+          // 微信端，没有登录直接授权登录
+          var url = encodeURIComponent(location.href);
+            window.location.href =
+              "/openapi/wechat/auth/authorize?returnUrl=" + url;
+        } else {
+          this.PopUpLogin_show = true;
+        }
       }
     },
     // 预览图片
     ProviewImg(img) {
-      var ProviewImgPath = this.$store.state.baseImagePath + "/hsFileData" + img;
+      var ProviewImgPath =
+        this.$store.state.baseImagePath + "/hsFileData" + img;
       this.InsuranceConsultant_show = false;
 
       this.$ImagePreview({
@@ -1093,10 +1109,11 @@ export default {
     .van-tag--danger {
       background-color: #008cff;
     }
-    .van-tag--normal{
+    .van-tag--normal {
       background-color: #8080ff;
     }
-    .van-tag--normal,.van-tag--danger {
+    .van-tag--normal,
+    .van-tag--danger {
       width: 140px !important;
       height: 50px;
       line-height: 50px;

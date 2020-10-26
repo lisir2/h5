@@ -25,7 +25,7 @@
             icon="orders-o"
             :to="{name:'productTerms',query:{productName:this.productName,planId:this.planId}}"
           />
-          <van-grid-item text="客户告知书" icon="notes-o" @click="ProviewImg(CustomerNotification)" />
+          <van-grid-item text="客户告知书" icon="notes-o" @click="$showPDF('../pdfFile/khgzs.pdf')" />
           <van-grid-item text="保单样本" icon="newspaper-o" class="policySamples" />
           <van-grid-item
             text="常见问题"
@@ -145,16 +145,6 @@
         </div>
         <van-button type="primary" round  color="linear-gradient(to right, #F7CD45, #ED7932)" block @click="notificationShow = false" :style="{position:'fixed',bottom:'10px',width: '90%',left: 0,right: 0, margin:'auto'}">我已确认并了解以上内容</van-button>
       </van-action-sheet>
-      <!-- 图片条款弹出框 -->
-      <van-popup v-model="clauseShow" :style="{ width:'100%',height: '100%'}"  closeable close-icon="close">
-        <div :style="{ width:'100%',height: '100%',overflow:'scroll'}">
-          <van-image :src="clausePath" :style="{ width:'100%'}">
-            <template v-slot:loading>
-                <van-loading type="spinner" size="20" />
-            </template>
-          </van-image>
-        </div>
-      </van-popup>
     </div>
   </div>
 </template>
@@ -198,7 +188,6 @@ export default {
       listContentImages2: require("@/assets/images/detail/客户告知书.png"),
       listContentImages3: require("@/assets/images/detail/样本保单.png"),
       listContentImages4: require("@/assets/images/detail/常见问题.png"),
-      CustomerNotification: require('@/assets/images/productDetails/CustomerNotification.png'),
       shareIcon: require("@/assets/images/detail/shareIcon.png"),
       detailShow: false,
       skeleton: true,
@@ -208,13 +197,18 @@ export default {
       ClauseShow: false, // 条款展示
       pdfFilePath:'', // pdf地址
       InsuredInformShow: false, // 投保流程告知
-      clauseShow: false, // 条款
-      clausePath: '', //条款地址
       notificationShow:false, //告知书弹框
     };
   },
   created() {
-    
+    // 微信授权之后判断是否注册绑定或手机号
+    if (this.is_weixn()) {
+      // 授权回调的之后，路径上会拼接上openid(本地cookie没有wxopenId 和 授权回调地址有openid时进行保存cookie)
+      if(this.getCookie('wxopenId') == '' && this.getQueryString("openid")){
+        this.setCookie("wxopenId", this.getQueryString("openid"), 30);
+      }
+      this.authorizationISbinding();
+    }
   },
   watch: {
     $route(to, form) {
@@ -268,7 +262,7 @@ export default {
         $(".policySamples").click(function() {
           that.pdfFilePath = window.location.origin + res.data.prodGoods.goodPolicySample;
           // that.ClauseShow = true;
-          that.ProviewImg(that.pdfFilePath);
+          that.$showPDF(that.pdfFilePath);
         });
       });
 
@@ -370,7 +364,7 @@ export default {
       }
     },
     // 分享按钮
-  onClickRight() {
+    onClickRight() {
       if(!this.getCookie("ZB_JUSER_Mid")){
         this.$refs.detailsTow.popupLogin(true);
       }else{
@@ -427,11 +421,23 @@ export default {
       this.$refs.detailsTow.SetWxShareShow();
       this.showShare = false;
     },
-    // 预览图片
-    ProviewImg(imgPath) {
-      this.clausePath = imgPath;
-      this.clauseShow = true;
-    },
+    // 微信授权之后判断是否注册绑定手机号
+    authorizationISbinding() {
+      // 未绑定跳转绑定页面 bindingState：1（已绑定）0（未绑定）
+      if (this.getQueryString("bindingState") === "0" && this.getQueryString('openid') != 'null') {
+        // 跳转绑定页面
+        this.$router.push({
+          path: "BindingPhone",
+          query: {
+            productId: this.getQueryString('productId'),
+            activityCode: this.getQueryString('activityCode'),
+            invitationCode: this.getQueryString('invitationCode'),
+            topActivityCode: this.getQueryString('topActivityCode'),
+            shareMid: this.getQueryString('shareMid'),
+          }
+        });
+      }
+    }
   }
 };
 </script>

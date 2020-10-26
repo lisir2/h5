@@ -60,14 +60,14 @@ export default {
       selectedTab: "",
       active: 0,
       icon: {
-        staticHome: require("../assets/images/tabbar/homeTabbar.png"),
-        activeHome: require("../assets/images/tabbar/homeTabbar1.png"),
-        staticClasslist: require("../assets/images/tabbar/classlistTabbar.png"),
-        activeClasslist: require("../assets/images/tabbar/classlistTabbar1.png"),
-        staticMine: require("../assets/images/tabbar/mineTabbar.png"),
-        activeMine: require("../assets/images/tabbar/mineTabbar1.png"),
-        staticStudy: require("../assets/images/tabbar/studyTabbar.png"),
-        activeStudy: require("../assets/images/tabbar/studyTabbar1.png")
+        staticHome: require("@/assets/images/tabbar/homeTabbar.png"),
+        activeHome: require("@/assets/images/tabbar/homeTabbar1.png"),
+        staticClasslist: require("@/assets/images/tabbar/classlistTabbar.png"),
+        activeClasslist: require("@/assets/images/tabbar/classlistTabbar1.png"),
+        staticMine: require("@/assets/images/tabbar/mineTabbar.png"),
+        activeMine: require("@/assets/images/tabbar/mineTabbar1.png"),
+        staticStudy: require("@/assets/images/tabbar/studyTabbar.png"),
+        activeStudy: require("@/assets/images/tabbar/studyTabbar1.png")
       }
     };
   }

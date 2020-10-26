@@ -76,7 +76,7 @@
           icon="orders-o"
           :to="{name:'productTerms',query:{productName:this.productName,planId:this.planId}}"
         />
-        <van-grid-item text="客户告知书" icon="notes-o" @click="$showFile('khgzs.pdf')" />
+        <van-grid-item text="客户告知书" icon="notes-o" @click="$showPDF('../pdfFile/khgzs.pdf')" />
         <van-grid-item text="保单样本" icon="newspaper-o" class="policySamples" />
         <van-grid-item
           text="常见问题"
@@ -118,7 +118,7 @@
           <p>
             <span
               style="color: rgb(0, 140, 255);"
-              @click="$showFile(link+item.termFilePath)"
+              @click="$showPDF(link+item.termFilePath)"
               v-for="(item,index) in TermsList"
               :key="index"
             >《{{item.termName}}》{{index == (TermsList.length-1) ? '' : '、'}}</span>

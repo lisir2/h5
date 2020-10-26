@@ -164,14 +164,6 @@ export default {
   },
   computed: {},
   mounted() {
-    // 可回溯 在生成订单加载的时候 执行
-    var infor = {};
-    infor.productVersion = "testversion"; //销售产品版本
-    infor.orderSysSource = "1"; //来源
-    infor.orderCode = this.$route.query.id; //此处传递对应的订单号
-    _postParams(infor);
-    console.log("可回溯 在生成订单加载的时候 执行传入订单号");
-
     this.orderNo = this.getQueryString("orderNo");
     var args = this.sign({ orderNo: this.orderNo });
     api.renrenPreviewData(args).then(res => {
@@ -180,6 +172,13 @@ export default {
       if (result.success) {
         this.previewData = result;
         this.policyFee = result.policyFee;
+        // 可回溯 在生成订单加载的时候 执行
+        var infor = {};
+        infor.productVersion = '1.0'; //销售产品版本
+        infor.orderSysSource = this.$store.state.orderSysSource; //来源
+        infor.orderCode = res.orderNo; //此处传递对应的订单号
+        _setOrder(infor);
+        // 可回溯 在生成订单加载的时候 执行
       }
     });
   },

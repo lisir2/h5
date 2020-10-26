@@ -197,12 +197,12 @@
         <span>我确认信息真实无误且同意</span>
       </label>
       <p style="color: #008CFF;margin-top: 0.1rem;" class="clause">
-        <span @click="showFile(agreementAddress)" class="agreementAddress">《保险经纪（代理)人协议》、</span>
+        <span @click="$showPDF(agreementAddress)" class="agreementAddress">《保险经纪（代理)人协议》、</span>
         <span
-          @click="showFile(letterOfUndertakingAddress)"
+          @click="$showPDF(letterOfUndertakingAddress)"
           class="letterOfUndertakingAddress"
         >《保险经纪从业人员合规承诺书》、</span>
-        <span @click="showFile(letterOfAttorneyAddress)" class="letterOfAttorneyAddress">《个人授权委托书》</span>
+        <span @click="$showPDF(letterOfAttorneyAddress)" class="letterOfAttorneyAddress">《个人授权委托书》</span>
       </p>
     </div>
     <div class="btn-groups">
@@ -266,9 +266,9 @@ export default {
       ],
       signatureShow: false,
       IDcardDemo: require("@/assets/images/agent/IDcardDemo.png"),
-      agreementAddress: "agent.pdf", //代理人协议
-      letterOfUndertakingAddress: "commitment.pdf", //承诺书
-      letterOfAttorneyAddress: "entrust.pdf" //委托书
+      agreementAddress: "../pdfFile/agent.pdf", //代理人协议
+      letterOfUndertakingAddress: "../pdfFile/commitment.pdf", //承诺书
+      letterOfAttorneyAddress: "../pdfFile/entrust.pdf" //委托书
     };
   },
   computed: {},
@@ -569,18 +569,6 @@ export default {
 
       return true;
     },
-    // pdf在线预览
-    showFile(url) {
-      layer.open({
-        type: 1,
-        title: "信息(点击“+”号放大查看条款)",
-        area: ["100%", "100%"], //宽高
-        content:
-          "<iframe src='./static/pdf/web/viewer.html?file=" +
-          url +
-          "' style='width:100%;height:100%'></iframe>"
-      });
-    }
   },
   mounted() {
     var that = this;
@@ -770,6 +758,7 @@ export default {
   width: 100%;
   height: 250px;
   margin-bottom: 20px;
+  box-sizing: border-box;
 }
 
 .signature {

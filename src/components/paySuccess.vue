@@ -24,8 +24,8 @@
         <div class="OfficialAccounts">
             <van-Image width="4.4rem" height="4.4rem" :src="bxjjw" />
             <div>
-            <p>关注微信公众号可随时查看保单提供理赔服务</p>
-            <input type="text" value="一键保存" readonly>
+                <p>关注微信公众号可随时查看保单提供理赔服务</p>
+                <input type="text" value="一键保存" readonly>
             </div>
         </div>
     </div>

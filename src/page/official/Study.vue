@@ -213,7 +213,7 @@ export default {
                 display: -webkit-box;
                 -webkit-line-clamp: 2; //行数
                 -webkit-box-orient: vertical;
-                font-size: 29px;
+                font-size: 30px;
                 font-weight: 700;
                 color: #333;
                 overflow: hidden;
@@ -221,11 +221,14 @@ export default {
                 display: -webkit-box;
                 -webkit-box-orient: vertical;
                 -webkit-line-clamp: 2;
-                margin-bottom: 35px;
+                margin-bottom: 20px;
             }
             .subTitle{
+                span{
+                  font-size: 26px;
+                }
                 .read, .share {
-                    color: #999999;
+                  color: #999999;
                 }
                 .tab {
                     color: #FB8400;

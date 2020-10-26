@@ -117,7 +117,7 @@ export default {
           margin-left: 50px;
         }
         .contactName {
-          width: 100px;
+          // width: 100px;
           // margin-left: 32px;
           color: #0c0c0c;
           display: inline-block;

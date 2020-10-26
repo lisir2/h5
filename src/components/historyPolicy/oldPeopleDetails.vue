@@ -138,21 +138,11 @@
             v-for="(item,index) in goodClauseList"
             :key="index+1000"
             href="javascript:void(0)"
-            @click="ProviewImg(item.docAddress)"
-          >《{{item.docOriginalName}}》</a>
+            @click="showPDF(item.docAddress)"
+          >《{{item.docOriginalName}}》</a>、
         </div>
       </div>
     </div>
-    <!-- 图片条款弹出框 -->
-    <van-popup v-model="clauseShow" :style="{ width:'100%',height: '100%'}"  closeable close-icon="close">
-        <div :style="{ width:'100%',height: '100%',overflow:'scroll'}">
-        <van-image :src="clausePath" :style="{ width:'100%'}">
-            <template v-slot:loading>
-                <van-loading type="spinner" size="20" />
-            </template>
-        </van-image>
-        </div>
-    </van-popup>
   </div>
 </template>
 
@@ -207,8 +197,6 @@ export default {
         accountNo: ""
       },
       goodClauseList: [], //产品条款
-      clauseShow: false, // 条款
-      clausePath: '', //条款地址
     };
   },
   computed: {},
@@ -292,15 +280,13 @@ export default {
     onClickLeft() {
       this.$router.go(-1);
     },
-    ProviewImg(url) {
+    showPDF(url) {
       let urlStart = url.split('.com')[0];
       let urlEnd = url.split('.com')[1];
-      let urlResult = urlStart +'.com/hsFileData' +urlEnd
-      this.clauseShow = true; // 条款
-      this.clausePath = urlResult; //条款地址
+      let urlResult = urlStart +'.com/hsFileData' +urlEnd;
+      this.$showPDF(urlResult);
     },
     // 保单下载
-
     DownLoadPolicy(policyNumber, index0) {
       //在data属性中找到下载的地址
       let policyUrl = this.inserdList[index0].policyUrl;

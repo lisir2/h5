@@ -142,7 +142,7 @@ export default {
       }
       .share_text {
         flex: 1.6 !important;
-        font-size: 16px;
+        font-size: 25px;
         text-align: center;
       }
       .soldOut {

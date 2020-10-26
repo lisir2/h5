@@ -13,7 +13,7 @@
               name="answer"
               :keyId="temp.id"
               :value="temp.isAnswer"
-              :checked="temp.id == answerKeyId[subjectNum>19 ? 19 : subjectNum].split('&')[0]"
+              :checked="temp.id == answerKeyId[subjectNum > 19 ? 19 : subjectNum].split('&')[0]"
               @click="subjectNum<19 ? next() : ''"
             />
           </label>
@@ -21,9 +21,10 @@
       </div>
     </div>
     <div class="progressBar">
-      <div><span class="progressContent"></span></div>
-      <p class="subjectNum">1/20</p>
-      <p class="topTopic" @click="topTopic()">上一题</p>
+      <!-- 渲染进度条 -->
+      <div><span class="progressContent" :style="{width:(subjectNum + 1) * 5 + '%'}"></span></div>
+      <p class="subjectNum">{{subjectNum + 1 > 20 ? 20 : subjectNum + 1}}/20</p>
+      <p class="topTopic" v-if="subjectNum > 0" @click="topTopic()">上一题</p>
     </div>
     <button v-if="subjectNum >= 19" @click="next()" class="nextBtn">提交</button>
   </div>
@@ -55,49 +56,31 @@ export default {
     topTopic() {
       --this.subjectNum;
       this.subject = this.allSubject[this.subjectNum];
-      // 渲染答案
-      $(
-        ".answer input:radio[keyid=" +
-          this.answerKeyId[this.subjectNum].split("&")[0] +
-          "]"
-      ).attr("checked", "checked");
-      // 置空答案
-      // grade[subjectNum] = 0;
-      // answerKeyId[subjectNum] = '';
-      $(".progressContent").css("width", (this.subjectNum + 1) * 5 + "%");
-      $(".subjectNum").html(this.subjectNum + 1 + "/20");
-      if (this.subjectNum <= 0) {
-        $(".topTopic").hide();
-      }
     },
     // 下一题
     next() {
       // 记录分数
       if ($(".answer input:checked").val()) {
-        // 显示上一题
-        $(".topTopic").show();
-        // 题目加一
-        ++this.subjectNum;
         // 答题正确加5分
         if ($(".answer input:checked").val() == 1) {
-          this.grade[this.subjectNum - 1] = 5;
+          this.grade[this.subjectNum] = 5;
         }
         // 获取答案主键id 放到数组中
-        this.answerKeyId[this.subjectNum - 1] = $(
+        this.answerKeyId[this.subjectNum] = $(
           ".answer input:radio[name=answer]:checked"
         ).attr("keyId") + (this.subjectNum <= 19 ? "&" : '');
+        
+        // 题目加一
+        ++this.subjectNum;
 
         // 是否是最后一题
         if (this.subjectNum <= 19) {
           // 获取题目
           this.subject = this.allSubject[this.subjectNum];
-          // 修改进度条
-          $(".progressContent").css("width", (this.subjectNum + 1) * 5 + "%");
-          $(".subjectNum").html(this.subjectNum + 1 + "/20");
         } else {
           // 最后一题进行答案结算，回答问题id拼接
-          var answerId = ""; //答案id拼接
-          var gradeNum = 0; //分数计算
+          var answerId = ""; // 答案id拼接
+          var gradeNum = 0; // 分数计算
           for (var i = 0; i < 20; i++) {
             answerId += this.answerKeyId[i];
             gradeNum += Number(this.grade[i]);
@@ -235,7 +218,6 @@ export default {
     border: none;
   }
   .topTopic {
-    display: none;
     text-align: left;
     margin-top: -38px;
     color: rgba(91, 138, 255, 1);

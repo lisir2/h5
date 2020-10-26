@@ -4,7 +4,7 @@ import Vuex from 'vuex';
 Vue.use(Vuex);
 const store = new Vuex.Store({
     state: {   //要设置的全局访问的state对象
-        orderSysSource: "HS_formal", // 可回溯渠道来源 正式:HS_formal 测试:HS_test
+        orderSysSource: "HS_test", // 可回溯渠道来源 正式:HS_formal 测试:HS_test
         healthAssort: '',//是否有健康告知 2:无 0:总体 1:逐一
         // 由于接口返回图片都是相对路径，本地调试会展示不出来，正式和测试的图片服务器地址又不一样，所以
         baseImagePath: 'https://test.zgbxjj.com',  // 默认图片路径，

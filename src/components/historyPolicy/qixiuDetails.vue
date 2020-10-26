@@ -137,7 +137,7 @@
             v-for="(item,index) in goodClauseList"
             :key="index+1000"
             href="javascript:void(0)"
-            @click="showFile(item.docAddress)"
+            @click="showPDF(item.docAddress)"
           >《{{item.docOriginalName}}》</a>
         </div>
       </div>
@@ -174,7 +174,6 @@ export default {
       subjectData: {}, //最后要用的标的对象
       productId: "", //产品id
       planId: "", //计划id
-
       baseInfo: {
         oNumber: "",
         policyNum: "",
@@ -287,22 +286,13 @@ export default {
     onClickLeft() {
       this.$router.go(-1);
     },
-    showFile(url) {
+    showPDF(url) {
       let urlStart = url.split('.com')[0];
       let urlEnd = url.split('.com')[1];
-      let urlResult = urlStart +'.com/hsFileData' +urlEnd
-      layer.open({
-        type: 1,
-        title: "信息(点击“+”号放大查看条款)",
-        area: ["100%", "100%"], //宽高
-        content:
-          "<iframe src='./static/pdf/web/viewer.html?file=" +
-          encodeURIComponent(urlResult)  +
-          "' style='width:100%;height:100%'></iframe>"
-      });
+      let urlResult = urlStart +'.com/hsFileData' + urlEnd;
+      this.$showPDF(encodeURIComponent(urlResult));
     },
     // 保单下载
-
     DownLoadPolicy(policyNumber, index0) {
       //在data属性中找到下载的地址
       let policyUrl = this.inserdList[index0].policyUrl;

@@ -227,7 +227,7 @@
           <div v-if="goodName == '安联臻爱医疗保险感恩版'" v-show="renewalOfInsurance == true">
             <van-checkbox v-model="checked" style="margin: 0.4rem 0.2rem 0.8rem;">
               我已阅读并同意
-              <span style="color: rgb(0, 140, 255);" @click="$showFile('AnLianRenewalInsurance.pdf')">《客户授权委托书和代扣服务协议》</span>
+              <span style="color: rgb(0, 140, 255);" @click="$showPDF('../pdfFile/AnLianRenewalInsurance.pdf')">《客户授权委托书和代扣服务协议》</span>
             </van-checkbox>
           </div>
           <!-- 安联臻爱医疗保险感恩版展示代扣服务协议 -->

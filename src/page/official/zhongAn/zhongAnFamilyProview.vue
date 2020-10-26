@@ -98,7 +98,7 @@
             <a
               v-for="(item , index) in newClauseList"
               href="javascript:void(0)"
-              @click="ProviewImg(link + item.termFilePath)"
+              @click="$showPDF(link + item.termFilePath)"
               :key="index"
             >《{{item.termName}}》</a>
           </div>
@@ -120,16 +120,6 @@
     <van-popup v-model="loadingShow" :lock-scroll="false" style="background-color: transparent;" :close-on-click-overlay="false">
             <!-- 加载动画 -->
         <van-loading size="24px" vertical color="#1989fa">数据加载中...</van-loading>
-    </van-popup>
-    <!-- 图片条款弹出框 -->
-    <van-popup v-model="clauseShow" :style="{ width:'100%',height: '100%'}"  closeable close-icon="close">
-        <div :style="{ width:'100%',height: '100%',overflow:'scroll'}">
-        <van-image :src="clausePath" :style="{ width:'100%'}">
-            <template v-slot:loading>
-                <van-loading type="spinner" size="20" />
-            </template>
-        </van-image>
-        </div>
     </van-popup>
   </div>
 </template>
@@ -187,27 +177,15 @@ export default {
       planId: "", //计划id
       loadingShow: false, //加载动画
       inserdNum: "", //被保险人个数
-      clauseShow: false, // 条款
-      clausePath: '', //条款地址
     };
   },
   mounted() {
-    // 可回溯 在生成订单加载的时候 执行
-    var infor={};
-    infor.productVersion="testversion"; //销售产品版本
-    infor.orderSysSource="1"; //来源
-    infor.orderCode=this.$route.query.id;//此处传递对应的订单号
-    _postParams(infor);
-    console.log("可回溯 在生成订单加载的时候 执行传入订单号");
-    
-
     var that = this;
     // 获取产品id 判读那些字段要展示
     this.orderNo = this.$route.query.orderNo;
     this.orderId = this.$route.query.orderId;
     var args = this.sign({ id: this.orderId });
     // 获取投保预览信息
-    // this.$axios.post("/arg/openapi/Order/appPreviewpolicy", args).then(res => {
     api.zhongAnPreviewpolicy(args).then(res => {
       this.configList = res;
       this.policyFee = res.policyFee;
@@ -372,6 +350,14 @@ export default {
           });
         });
       }
+
+      // 可回溯 在生成订单加载的时候 执行
+      var infor = {};
+      infor.productVersion = res.product.goodVersion; //销售产品版本
+      infor.orderSysSource = this.$store.state.orderSysSource; //来源
+      infor.orderCode = this.orderNo; //此处传递对应的订单号
+      _setOrder(infor);
+      // 可回溯 在生成订单加载的时候 执行
     });
   },
   methods: {
@@ -458,10 +444,6 @@ export default {
             this.Toast(err.message);
           });
       }
-    },
-    ProviewImg(url) {
-      this.clauseShow = true; // 条款
-      this.clausePath = url; //条款地址
     }
   }
 };

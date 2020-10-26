@@ -1,18 +1,26 @@
-# 项目发布修改
+# 项目发布正式修改
 1、router.js 文件
 这两个本地调试的时候可以注释掉（不注释掉会报错），发布时 history 要放开。
 mode:'history', //正式 测试
 base:'hsfront',  //正式 测试
 
 2、store -> index.js 文件
-因为接口图片返的是相对路径，本地调试时图片展示不出来，所以在这里添加了状态（可根据api代理地址修改图片路径）， appid 发布测试时也要修改
+orderSysSource: "HS_formal", // 可回溯渠道来源 正式:HS_formal 测试:HS_test
+//因为接口图片返的是相对路径，本地调试时图片展示不出来，所以在这里添加了状态（可根据api代理正式、测试地址修改图片路径）， appid 发布测试时也要修改
 baseImagePath: 'https://www.zgbxjj.com',  //所有图片路径
 bannerImagePath: 'https://www.zgbxjj.com/hsFileData',  //banner图路径
 JumpPath:'https://www.zgbxjj.com',  //弹出pdf文件路径
 upLoadImg: 'https://www.zgbxjj.com',  //上传图片路径
 appid: 'wxec19abc8795c0014', //测试:wx09f6d091df15b1f8    正式:wxec19abc8795c0014  
 
-2、打包文件名称修改为hsfront对应服务器上的hsfront文件夹，可在config文件下的index文件进行修改
+3、可回溯打包修改
+index.html 文件
+pdf.html 文件
+打包正式的时候，这两个文件里面的 SDK 引入正式的（相对路径）
+
+4、打包文件名称修改为hsfront对应服务器上的hsfront文件夹，可在config文件下的index文件进行修改
+
+
 
 # 项目难点
 （1）投保页面：

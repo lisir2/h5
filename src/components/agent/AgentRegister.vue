@@ -16,7 +16,7 @@
         <button @click="register()" class="getMoney">立即注册赚大钱</button>
         <van-checkbox v-model="checked" class="label">
           同意
-          <a @click="showFile($event)">《保险经纪网协议》</a>
+          <span @click="$showPDF('../pdfFile/zgbxjj_zcxy.pdf')">《保险经纪网协议》</span>
         </van-checkbox>
       </div>
       <img src="../../assets/images/agent/centerImg.png" />
@@ -198,17 +198,6 @@ export default {
         });
       }
     },
-    // pdf在线预览
-    showFile(event) {
-      event.stopPropagation();
-      layer.open({
-        type: 1,
-        title: "信息(点击“+”号放大查看条款)",
-        area: ["100%", "100%"], //宽高
-        content:
-          "<iframe src='./static/pdf/web/viewer.html?file=zgbxjj_zcxy.pdf' style='width:100%;height:100%'></iframe>"
-      });
-    },
     //弹框js  link:确定之后跳转地址 text：提示文本 title：标题  btnText:按钮文字
     inspection(link, text, title, btnText) {
       this.MessagePopVal.routerLink = link;
@@ -320,8 +309,7 @@ header img {
   margin: 20px auto 0;
 }
 
-.register > .label a {
-  text-decoration: none;
+.register > .label span {
   color: #008cff;
   display: inline;
   vertical-align: middle;

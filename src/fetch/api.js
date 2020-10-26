@@ -337,11 +337,11 @@ getZnCustomerPlan(params) {
   renrenInsureData(params) {
     return post('/openapi/Order/renrenInsureData', params);
   },
-  // 人人巴士支付宝支付接口
+  // 支付宝支付接口（如：人人巴士、大家保产品）
   ZFBalipay(params) {
     return post('/openapi/pay/alipay', params);
   },
-  // 人人巴士微信支付接口 
+  // 微信支付接口 (如：人人巴士、大家保产品人人巴士)
   wxOrderPay(params) {
     return post('/openapi/pay/wxOrderPay', params);
   },
@@ -556,5 +556,13 @@ getZnCustomerPlan(params) {
   // 被保人确认订单接口  
   insuredConfirmInsuranceInformation(params){
     return post('/openapi/Order/insuredConfirmInsuranceInformation', params);
+  },
+  // 授权登录 关联账号并登陆
+  weChatBindingPhone(params){
+    return post('/openapi/h5/user/weChatBindingPhone', params);
+  },
+  // 授权登录 绑定未注册的账号
+  weChatBindingUnregisteredPhone(params){
+    return post('/openapi/h5/user/weChatBindingUnregisteredPhone', params);
   }
 }

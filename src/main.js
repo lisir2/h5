@@ -135,7 +135,7 @@ Vue.prototype.clipboard = clipboard;
 Vue.prototype.$ImagePreview = ImagePreview;
 Vue.prototype.$WXShare = WXShare; // 进行微信签名、微信分享
 Vue.prototype.floatMultiply = floatMultiply;  // js乘法 丢失精度问题 
-Vue.prototype.$showFile = showFile;
+Vue.prototype.$showPDF = showPDF;
 
 
 // params:要传的参数 encrypt:要加密的参数（密码） 包含在params对象里面
@@ -164,9 +164,14 @@ function sign(params, encrypt) {
 
 // 设置cookie
 function setCookie(c_name, value, expiredays) {
-  var exdate = new Date();
-  exdate.setDate(exdate.getDate() + expiredays);
-  document.cookie = c_name + "=" + escape(value) + ";expires = " + exdate.toGMTString() + ";path = /;";
+  if (expiredays){
+    var exdate = new Date();
+    exdate.setDate(exdate.getDate() + expiredays);
+    document.cookie = c_name + "=" + escape(value) + ";expires = " + exdate.toGMTString() + ";path = /;";
+  }else{
+    document.cookie = c_name + "=" + escape(value) + ";path = /;";
+  }
+  
 }
 // 获取cookie
 function getCookie(name) {
@@ -190,7 +195,6 @@ function policyInquiry(SuccessCallback) {
   var args = sign({ userId: getCookie('ZB_JUSER_Mid') });
   api.queryPersonalInfo(args).then(res => {
     if (res.code == 20000) {
-      console.log(res.data.realName, res.data.realCertificationNo);
       if (res.data.realName && res.data.realCertificationNo) {
         // 已实名
         SuccessCallback();
@@ -231,9 +235,8 @@ function getOpenId(code) {
     data: { code: code },
     dataType: "json",
     success: function (result) {
-      console.log(result)
       if (result.code == 20000) {
-        setCookie('wxopenId', result.openId);
+        setCookie('wxopenId', result.openId,30);
         setCookie('headImgUrl', result.wxMpUser.headImgUrl);
       }
     }
@@ -358,17 +361,20 @@ function SilentAuthorization() {
 };
 
 /**
- * 
- * @param {*} url pdf弹窗地址
+ * pdfh5js框架(pdf预览有两个UI框架 1、pdfjs 2、pdfh5js)
+ * @param {*} url pdf弹窗地址 如果传入项目本地的pdf的话，预览地址为打包之后的相对路径即可
  */
-function showFile(url) {
-  event.stopPropagation();
+function showPDF(url) {
+  try {
+    event.stopPropagation();
+  } catch (error) {}
+  
   layer.open({
     type: 1,
-    title: "信息(点击“+”号放大查看条款)",
+    title: "信息(双击放大查看条款)",
     area: ["100%", "100%"], //宽高
     content:
-      "<iframe src='./static/pdf/web/viewer.html?file=" +
+      "<iframe src='./static/pdfh5/pdf.html?file=" +
       url +
       "' style='width:100%;height:100%'></iframe>"
   });
@@ -379,7 +385,7 @@ function showFile(url) {
  * @param {*} title  分享标题
  * @param {*} descript  分享描述
  * @param {*} ShareImage  分享路径
- * @param {*} ShareLink  //分享链接
+ * @param {*} ShareLink  // 分享链接
  * @param {*} ShareSuccess  分享成功回调 js-sdk 1.4之后没有分享成功回调了
  */
 function WXShare(title, descript, ShareImage, ShareLink, ShareSuccess) {
@@ -478,6 +484,7 @@ var guardLogin = [
 // 全局路由守卫
 router.beforeEach((to, from, next) => {
   console.log(to.name, from.name);
+  var loginStatus = getCookie('ZB_JUSER_Mid'); //登录状态
 
   // if (to.meta.title) {//判断是否有标题
   //   document.title = to.meta.title
@@ -487,23 +494,19 @@ router.beforeEach((to, from, next) => {
   store.commit("toRouter", to.name);
   store.commit("fromRouter", from.name);
   // 微信端首页、我的页面、产品详情页面 调用手动授权
-  if (to.name == 'home' || to.name == 'mine') { // || to.name == 'productdetail'
-    next();// 必须使用 next ,执行效果依赖 next 方法的调用参数
-    if (is_weixn()) {
-      // 判读cookie里面是否有 wxopenid 有的话不进行授权
-      if (getCookie('wxopenId') == "") {
-        // 授权成功之后，页面路径里面会有openid保存到cookie，没有openid则进行授权
-        if (!getQueryString("openid")) {
-          var url = encodeURIComponent(location.href);
-          window.location.href = '/openapi/wechat/auth/authorize?returnUrl=' + url;
-        } else {
-          setCookie('wxopenId', getQueryString("openid"));
-        }
+  if (to.name == 'home' || to.name == 'mine') {
+    next();// 必须使用 next ,执行效果依赖 next 方法的调用参数 
+    if (is_weixn() && (getCookie('wxopenId') == "" || !loginStatus) && !getCookie('Logout')) {  // cookie wxopenid为空,loginStatus没有登录，进行授权登录 Logout：用户退出登录不在进行授权登录
+      // 授权成功之后，页面路径里面会有openid保存到cookie，没有openid则进行授权
+      if (!getQueryString("openid")) {
+        var url = encodeURIComponent(location.href);
+        window.location.href = '/openapi/wechat/auth/authorize?returnUrl=' + url;
+      } else {
+        setCookie('wxopenId', getQueryString("openid"), 30);
       }
     }
-    // 特殊页面必须登录（路由时判断是否登录） 
+  // 特殊页面必须登录（路由时判断是否登录） 
   } else if (guardLogin.includes(to.name)) {
-    var loginStatus = getCookie('ZB_JUSER_Mid'); //登录状态
     var activityCode = getQueryString("activityCode"); //渠道码
     var phone = getQueryString("phone"); //手机号
     if (loginStatus) {// 已登录
@@ -535,10 +538,11 @@ router.beforeEach((to, from, next) => {
     } else if (activityCode != '' && phone != '' && to.name == 'personalPolicy') {
       next();
     } else {
+      // 一下页面没有登录，routerLink：登录之后跳转路由
       if (to.name == "policyInquiry") {
-        next({ path: 'loginRegister', query: { routerLink: 'policyInquiry' } });
+        next({ path: 'loginRegister', query: { routerLink: 'policyInquiry' }});
       } else if (to.name == "myCard") {
-        next({ path: 'loginRegister', query: { routerLink: 'myCard' } });
+        next({ path: 'loginRegister', query: { routerLink: 'myCard' }});
       } else if (to.name == "Customize") {
         next({ path: 'loginRegister', query: to.query });
       } else {
@@ -563,6 +567,8 @@ router.beforeEach((to, from, next) => {
         }
       }
     }
+  } else if (to.name == 'productdetail') { // 产品详情页面不进行授权，点击立即投保判断(登录状态、微信浏览器)在进行手动授权
+    next();
   } else {
     next();// 必须使用 next ,执行效果依赖 next 方法的调用参数
     // 如果用户拒绝了授权，或进入到其他路由(除了home、mine、FreeInsurance其他使用静默授权)，判断本地是否有(wxopenid),没有则进行静默授权

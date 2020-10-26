@@ -33,23 +33,20 @@
         <server-online></server-online>
         <!-- 底部公共内容 -->
         <end-modul></end-modul>
-        <!-- Tabbar标签栏 -->
-        <foot-menu></foot-menu>
     </div>
   </div>
 </template>
 
 <script>
-import FootMenu from '../../components/footMenu.vue'
-import GirdMenu from '../../components/girdMenu.vue'
-import AgentPlan from '../../components/agentPlan.vue'
-import PolicyLife from '../../components/policyLife.vue'
-import HotProduct from '../../components/hotProduct.vue'
-import CompanyVideo from '../../components/companyVideo.vue'
-import ServerOnline from '../../components/serverOnline.vue'
-import EndModul from '../../components/endModul.vue'
+import GirdMenu from '@/components/home/girdMenu.vue';
+import AgentPlan from '@/components/home/agentPlan.vue';
+import PolicyLife from '@/components/home/policyLife.vue';
+import HotProduct from '@/components/home/hotProduct.vue';
+import CompanyVideo from '@/components/home/companyVideo.vue';
+import ServerOnline from '@/components/home/serverOnline.vue';
+import EndModul from '@/components/home/endModul.vue';
 import $ from 'jquery';
-import api from '../../fetch/api'
+import api from '@/fetch/api'
 
 export default {
   name: 'home',
@@ -97,7 +94,7 @@ export default {
       // this.$router.push({ path: "/productdetail", query: { productId: id } });
     }
   },
-  components: {FootMenu,GirdMenu,AgentPlan,PolicyLife,HotProduct,CompanyVideo,ServerOnline,EndModul}
+  components: {GirdMenu,AgentPlan,PolicyLife,HotProduct,CompanyVideo,ServerOnline,EndModul}
 }
 </script>
 
