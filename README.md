@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # 项目发布正式修改
 1、router.js 文件
 这两个本地调试的时候可以注释掉（不注释掉会报错），发布时 history 要放开。
@@ -13,11 +12,6 @@ bannerImagePath: 'https://www.zgbxjj.com/hsFileData',  //banner图路径
 JumpPath:'https://www.zgbxjj.com',  //弹出pdf文件路径
 upLoadImg: 'https://www.zgbxjj.com',  //上传图片路径
 appid: 'wxec19abc8795c0014', //测试:wx09f6d091df15b1f8    正式:wxec19abc8795c0014  
-=======
-# 项目介绍
-移动端微商城
-vue-cli 2.0，使用vant、layui UI框架
->>>>>>> 106c5c72fd0da5d774c0fe49568b8bb99c984365
 
 3、可回溯打包修改
 index.html 文件
